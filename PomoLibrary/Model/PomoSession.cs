@@ -22,5 +22,20 @@ namespace PomoLibrary.Model
         {
 
         }
+
+        internal void StartSession()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void PauseSession()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void StopSession()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

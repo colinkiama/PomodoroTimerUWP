@@ -11,7 +11,7 @@ namespace PomoLibrary.Helpers
     {
         const string launchCountSettingsValue = "launchCount";
         const string noMorePromptsSettingsValue = "noMorePrompts";
-        const string emailValue = "colinkiama@gmail.com";
+        public const string emailValue = "colinkiama@gmail.com";
 
         static string appDisplayName = "";
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;

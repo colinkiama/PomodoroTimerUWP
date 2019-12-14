@@ -120,6 +120,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\AnimationHelper.cs" />
     <Compile Include="Helpers\ReviewHelper.cs" />
     <Compile Include="Model\SessionTimer.cs" />
@@ -133,6 +136,9 @@
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Structs\PomoSessionLength.cs" />
     <Compile Include="Structs\PomoSessionSettings.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Notifier.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <EmbeddedResource Include="Properties\PomoLibrary.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,12 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
       <Version>2.2.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Dialogs\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -120,12 +120,13 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Model\SessionTimer.cs" />
     <Compile Include="Enums\PomoSessionState.cs" />
     <Compile Include="Enums\TimeUnit.cs" />
-    <Compile Include="Model\Session.cs" />
+    <Compile Include="Model\PomoSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structs\PomoSessionLength.cs" />
+    <Compile Include="Structs\PomoSessionSettings.cs" />
     <EmbeddedResource Include="Properties\PomoLibrary.rd.xml" />
   </ItemGroup>
   <ItemGroup>

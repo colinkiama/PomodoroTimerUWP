@@ -9,15 +9,12 @@ namespace PomoLibrary.Structs
 {
     public struct PomoSessionLength : IEquatable<PomoSessionLength>
     {
-        private int _length;
-        private TimeUnit _unitOfLength;
-
-        public int Length { get => _length; set => _length = value; }
-        public TimeUnit UnitOfLength { get => _unitOfLength; set => _unitOfLength = value; }
+        public int Length { get; set; }
+        public TimeUnit UnitOfLength { get; set; }
 
         public bool Equals(PomoSessionLength other)
         {
-            return this._length == other._length && this._unitOfLength == other._unitOfLength;
+            return this.Length == other.Length && this.UnitOfLength == other.UnitOfLength;
         }
 
         public double TimeInMilliseconds => GetTimeInMilliseconds();
@@ -34,8 +31,8 @@ namespace PomoLibrary.Structs
         public override int GetHashCode()
         {
             int hash = 13;
-            hash = (hash * 7) + _length.GetHashCode();
-            hash = (hash * 7) + _unitOfLength.GetHashCode();
+            hash = (hash * 7) + Length.GetHashCode();
+            hash = (hash * 7) + UnitOfLength.GetHashCode();
 
             return hash;
         }
@@ -52,7 +49,7 @@ namespace PomoLibrary.Structs
 
         private double GetTimeInMilliseconds()
         {
-            return _length * (int)_unitOfLength;
+            return Length * (int)UnitOfLength;
         }
     }
 }

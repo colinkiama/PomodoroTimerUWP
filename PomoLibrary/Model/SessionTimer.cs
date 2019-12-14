@@ -1,10 +1,13 @@
-﻿using System;
+﻿using PomoLibrary.Structs;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
-namespace PomoLibrary
+namespace PomoLibrary.Model
 {
     public class SessionTimer
     {
@@ -15,7 +18,7 @@ namespace PomoLibrary
         int timesToTick = 0;
 
 
-        public SessionTimer(DysproseSessionLength sessionTime)
+        public SessionTimer(PomoSessionLength sessionTime)
         {
             timer = new DispatcherTimer();
             timesTicked = 0;

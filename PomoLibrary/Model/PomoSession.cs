@@ -11,11 +11,13 @@ namespace PomoLibrary.Model
 {
     public class PomoSession
     {
+        private NextSessionData _nextSessionCache;
         public int SessionNumber { get; set; }
         public PomoSessionType CurrentSesionType { get; set; }
         public PomoSessionState CurrentSessionState { get; set; }
         public PomoSessionSettings SessionSettings { get; set; }
         public SessionTimer Timer { get; set; }
+        
 
 
         public event EventHandler<TimeSpan> TimerTicked;
@@ -38,8 +40,8 @@ namespace PomoLibrary.Model
             var nextSessionType = DetermineNextSessionType();
             var nextSessionState = DetermineNextSessionState();
             TimeSpan nextSessionLength = DetermineNextSessionLength(nextSessionState, nextSessionType);
-
-            return new NextSessionData { NextSessionType = nextSessionType, NextSessionState = nextSessionState, NextSessionLength = nextSessionLength };
+            _nextSessionCache = new NextSessionData { NextSessionType = nextSessionType, NextSessionState = nextSessionState, NextSessionLength = nextSessionLength };
+            return _nextSessionCache;
         }
 
         private TimeSpan DetermineNextSessionLength(PomoSessionState nextSessionState, PomoSessionType nextSessionType)

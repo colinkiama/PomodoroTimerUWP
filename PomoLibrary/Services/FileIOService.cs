@@ -18,43 +18,24 @@ namespace PomoLibrary.Services
         private static Lazy<FileIOService> lazy =
             new Lazy<FileIOService>(() => new FileIOService());
 
-        const string GlobalSettingsFileName = "GlobalSettings.json";
         const string SessionSettingsFileName = "SessionSettings.json";
+        const string CurrentSessionSettingsFileName = "CurrentSession.json";
 
         static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+        
         public static FileIOService Instance => lazy.Value;
 
         private FileIOService() { }
 
-        public async Task<DysproseGlobalSettings?> LoadGlobalSettings()
+        public async Task<PomoSessionSettings?> LoadSessionSettings()
         {
-            DysproseGlobalSettings? globalSettings = null;
+            PomoSessionSettings? sessionSettings = null;
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(DysproseGlobalSettings));
-                using (var stream = await LoadFileAsync(GlobalSettingsFileName))
-                {
-                    globalSettings = (DysproseGlobalSettings)serializer.ReadObject(stream);
-                }
-            }
-            catch (Exception)
-            {
-
-            }
-
-            return globalSettings;
-        }
-
-
-        public async Task<DysproseSessionSettings?> LoadSessionSettings()
-        {
-            DysproseSessionSettings? sessionSettings = null;
-            try
-            {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(DysproseSessionSettings));
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(PomoSessionSettings));
                 using (var stream = await LoadFileAsync(SessionSettingsFileName))
                 {
-                    sessionSettings = (DysproseSessionSettings)serializer.ReadObject(stream);
+                    sessionSettings = (PomoSessionSettings)serializer.ReadObject(stream);
                 }
             }
             catch (Exception)
@@ -80,29 +61,14 @@ namespace PomoLibrary.Services
             return stream;
         }
 
-
-        public async Task SaveGlobalSettingsAsync(DysproseGlobalSettings settingsToSave)
+        public async Task SaveSessionSettingsAsync(PomoSessionSettings settingsToSave)
         {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(DysproseGlobalSettings));
-            using (Stream stream = await GetWriteStreamAsync(GlobalSettingsFileName))
-            {
-                serializer.WriteObject(stream, settingsToSave);
-            }
-
-        }
-
-
-
-        public async Task SaveSessionSettingsAsync(DysproseSessionSettings settingsToSave)
-        {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(DysproseSessionSettings));
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(PomoSessionSettings));
             using (Stream stream = await GetWriteStreamAsync(SessionSettingsFileName))
             {
                 serializer.WriteObject(stream, settingsToSave);
             }
         }
-
-       
 
         private async Task<Stream> GetWriteStreamAsync(string fileName)
         {

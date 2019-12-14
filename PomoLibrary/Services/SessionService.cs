@@ -16,13 +16,13 @@ namespace PomoLibrary.Services
 
         public static SessionService Instance => lazy.Value;
 
-        private DysproseSessionState _currentSessionState = DysproseSessionState.Stopped;
+        private PomoSessionState _currentSessionState = PomoSessionState.Stopped;
 
         private SessionService() { }
 
-        public event EventHandler<DysproseSessionState> SessionStateChanged;
+        public event EventHandler<PomoSessionState> SessionStateChanged;
 
-        public void UpdateSessionState(DysproseSessionState newState)
+        public void UpdateSessionState(PomoSessionState newState)
         {
             SessionStateChanged?.Invoke(this, newState);
         }

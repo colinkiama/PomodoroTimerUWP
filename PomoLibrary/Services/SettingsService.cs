@@ -16,7 +16,6 @@ namespace PomoLibrary.Services
         public event EventHandler<PomoSessionSettings> SessionSettingsUpdated;
 
         // Singleton Pattern with "Lazy"
-        private SettingsService _settingsService = null;
         private static Lazy<SettingsService> lazy =
             new Lazy<SettingsService>(() => new SettingsService());
 

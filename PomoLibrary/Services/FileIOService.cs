@@ -14,7 +14,6 @@ namespace PomoLibrary.Services
     public class FileIOService
     {
         // Singleton Pattern with "Lazy"
-        private FileIOService _fileIOService = null;
         private static Lazy<FileIOService> lazy =
             new Lazy<FileIOService>(() => new FileIOService());
 

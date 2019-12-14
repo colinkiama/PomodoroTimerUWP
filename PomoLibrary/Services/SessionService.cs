@@ -10,13 +10,10 @@ namespace PomoLibrary.Services
     public class SessionService
     {
         // Singleton Pattern with "Lazy"
-        private SessionService _settingsService = null;
         private static Lazy<SessionService> lazy =
             new Lazy<SessionService>(() => new SessionService());
 
         public static SessionService Instance => lazy.Value;
-
-        private PomoSessionState _currentSessionState = PomoSessionState.Stopped;
 
         private SessionService() { }
 

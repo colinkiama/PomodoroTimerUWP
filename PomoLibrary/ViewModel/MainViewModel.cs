@@ -17,19 +17,6 @@ namespace PomoLibrary.ViewModel
     class MainViewModel : Notifier
     {
 
-        private double _fontSize;
-
-        public double FontSize
-        {
-            get { return _fontSize; }
-            set
-            {
-                _fontSize = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-
         private TimeSpan _sessionLength;
 
         private TimeSpan _currentSessionTime;
@@ -124,11 +111,6 @@ namespace PomoLibrary.ViewModel
             SessionInverseProgress = 100;
         }
 
-        private void FadeTimerService_FadeCompleted(object sender, Microsoft.Toolkit.Uwp.UI.Animations.AnimationSetCompletedEventArgs e)
-        {
-            SessionText = "";
-        }
-
         private void FillInDetailsFromSession()
         {
             CurrentSession.TimerTicked += CurrentSession_TimerTicked;
@@ -162,24 +144,24 @@ namespace PomoLibrary.ViewModel
         }
 
 
-        internal async Task ResumeAsync()
+        internal void Resume()
         {
             CurrentSession.StartSession();
         }
 
-        internal async Task StartAsync()
+        internal void Start()
         {
             SessionText = "";
             CurrentSession = new PomoSession();
             FillInDetailsFromSession();
         }
 
-        internal async Task PauseAsync()
+        internal void Pause()
         {
             CurrentSession.PauseSession();
         }
 
-        internal async Task StopAsync()
+        internal void Stop()
         {
             CurrentSession.StopSession();
             ResetSessionInverseProgress();
@@ -188,7 +170,6 @@ namespace PomoLibrary.ViewModel
         private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)
         {
             CurrentSessionTime = _sessionLength - timeElapsed;
-            SessionInverseProgress = CurrentSessionTime.TotalMilliseconds / _sessionLength.TotalMilliseconds;
         }
     }
 }

@@ -9,7 +9,6 @@ namespace PomoLibrary.Services
     public class MenuButtonService
     {
         // Singleton Pattern with "Lazy"
-        private MenuButtonService _settingsService = null;
         private static Lazy<MenuButtonService> lazy =
             new Lazy<MenuButtonService>(() => new MenuButtonService());
 

@@ -13,13 +13,12 @@ namespace PomoLibrary.Helpers
         const string noMorePromptsSettingsValue = "noMorePrompts";
         public const string emailValue = "colinkiama@gmail.com";
 
-        static string appDisplayName = "";
+        static string appDisplayName = Package.Current.DisplayName;
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
         static ReviewHelper()
         {
             TryUpdateLaunchCount();
-            appDisplayName = Package.Current.DisplayName;
         }
       
 

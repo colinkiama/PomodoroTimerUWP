@@ -43,7 +43,67 @@ namespace PomoLibrary.ViewModel
             }
         }
 
-        
+
+        private int _breakSessionLength;
+
+        public int BreakSessionLength
+        {
+            get { return _breakSessionLength; }
+            set
+            {
+                if (_breakSessionLength != value)
+                {
+                    _breakSessionLength = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private TimeUnit _breakSessionTimeUnit;
+
+        public TimeUnit BreakSessionTimeUnit
+        {
+            get { return _breakSessionTimeUnit; }
+            set
+            {
+                if (_breakSessionTimeUnit != value)
+                {
+                    _breakSessionTimeUnit = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private int _longBreakSessionLength;
+
+        public int LongBreakSessionLength
+        {
+            get { return _longBreakSessionLength; }
+            set
+            {
+                if (_longBreakSessionLength != value)
+                {
+                    _longBreakSessionLength = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private TimeUnit _longBreakSessionTimeUnit;
+
+        public TimeUnit LongBreakSessionTimeUnit
+        {
+            get { return _longBreakSessionTimeUnit; }
+            set
+            {
+                if (_longBreakSessionTimeUnit != value)
+                {
+                    _longBreakSessionTimeUnit = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         // Beware of double negative!
         // This was done for easier xaml binding
         private bool _isSessionNotInProgress;
@@ -92,7 +152,9 @@ namespace PomoLibrary.ViewModel
 
         private PomoSessionSettings GetSessionSettingsFromViewModel() => new PomoSessionSettings
         {
-            WorkSessionLength = new PomoSessionLength { Length = _workSessionLength, UnitOfLength = _workSessionTimeUnit }
+            WorkSessionLength = new PomoSessionLength { Length = _workSessionLength, UnitOfLength = _workSessionTimeUnit },
+            BreakSessionLength = new PomoSessionLength { Length = _breakSessionLength, UnitOfLength = _breakSessionTimeUnit },
+            LongBreakSessionLength = new PomoSessionLength { Length = _longBreakSessionLength, UnitOfLength = _longBreakSessionTimeUnit },
         };
 
         private void Instance_MenuClosed(object sender, EventArgs e)
@@ -111,15 +173,21 @@ namespace PomoLibrary.ViewModel
             if (_isSessionNotInProgress)
             {
                 var sessionSettings = GetSessionSettingsFromViewModel();
-                SettingsService.Instance.UpdateSessionSettings(sessionSettings); 
+                SettingsService.Instance.UpdateSessionSettings(sessionSettings);
             }
         }
 
-       
+
         private void AddSessionSettingsToViewModel(PomoSessionSettings sessionSettings)
         {
             WorkSessionLength = sessionSettings.WorkSessionLength.Length;
             WorkSessionTimeUnit = sessionSettings.WorkSessionLength.UnitOfLength;
+
+            BreakSessionLength = sessionSettings.BreakSessionLength.Length;
+            BreakSessionTimeUnit = sessionSettings.BreakSessionLength.UnitOfLength;
+
+            LongBreakSessionLength = sessionSettings.LongBreakSessionLength.Length;
+            LongBreakSessionTimeUnit = sessionSettings.LongBreakSessionLength.UnitOfLength;
         }
     }
 }

@@ -60,7 +60,8 @@ namespace PomoLibrary.Services
                     {
                         Length = 20,
                         UnitOfLength = Enums.TimeUnit.Minutes
-                    }
+                    },
+                    NumberOfSessions = 4
                 };
 
             }

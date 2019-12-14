@@ -146,7 +146,11 @@ namespace PomoLibrary.ViewModel
 
         internal void Resume()
         {
-            CurrentSession.StartSession();
+           bool resumedSession = CurrentSession.StartSession();
+            if (!resumedSession)
+            {
+                // Session has been completely done!
+            }
         }
 
         internal void Start()

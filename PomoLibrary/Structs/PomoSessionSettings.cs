@@ -12,12 +12,14 @@ namespace PomoLibrary.Structs
         public PomoSessionLength WorkSessionLength { get; set; }
         public PomoSessionLength BreakSessionLength { get; set; }
         public PomoSessionLength LongBreakSessionLength { get; set; }
+        public int NumberOfSessions { get; set; }
 
         public bool Equals(PomoSessionSettings other)
         {
             return this.WorkSessionLength == other.WorkSessionLength
                    && this.BreakSessionLength == other.BreakSessionLength
-                   && this.LongBreakSessionLength == other.LongBreakSessionLength;
+                   && this.LongBreakSessionLength == other.LongBreakSessionLength
+                   && this.NumberOfSessions == other.NumberOfSessions;
         }
 
         public override int GetHashCode()
@@ -26,6 +28,7 @@ namespace PomoLibrary.Structs
             hash = (hash * 7) + WorkSessionLength.GetHashCode();
             hash = (hash * 7) + BreakSessionLength.GetHashCode();
             hash = (hash * 7) + LongBreakSessionLength.GetHashCode();
+            hash = (hash * 7) + NumberOfSessions.GetHashCode();
             return hash;
         }
 

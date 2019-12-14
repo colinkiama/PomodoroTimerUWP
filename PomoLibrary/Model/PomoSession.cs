@@ -33,16 +33,35 @@ namespace PomoLibrary.Model
         }
 
 
-        internal void GetNextSessionData()
+        internal NextSessionData GetNextSessionData()
         {
             var nextSessionType = DetermineNextSessionType();
             var nextSessionState = DetermineNextSessionState();
-            TimeSpan sessionLength = DetermineNextSessionLength(nextSessionState, nextSessionType);
+            TimeSpan nextSessionLength = DetermineNextSessionLength(nextSessionState, nextSessionType);
+
+            return new NextSessionData { NextSessionType = nextSessionType, NextSessionState = nextSessionState, NextSessionLength = nextSessionLength };
         }
 
         private TimeSpan DetermineNextSessionLength(PomoSessionState nextSessionState, PomoSessionType nextSessionType)
         {
             TimeSpan lengthToReturn = TimeSpan.FromMilliseconds(0);
+            if (nextSessionState != PomoSessionState.Stopped)
+            {
+                switch (nextSessionType)
+                {
+                    case PomoSessionType.Work:
+                        lengthToReturn = TimeSpan.FromMilliseconds(SessionSettings.WorkSessionLength.TimeInMilliseconds);
+                        break;
+                    case PomoSessionType.Break:
+                        lengthToReturn = TimeSpan.FromMilliseconds(SessionSettings.BreakSessionLength.TimeInMilliseconds);
+                        break;
+                    case PomoSessionType.LongBreak:
+                        lengthToReturn = TimeSpan.FromMilliseconds(SessionSettings.LongBreakSessionLength.TimeInMilliseconds);
+                        break;
+
+                }
+            }
+            return lengthToReturn;
         }
 
         private PomoSessionState DetermineNextSessionState()
@@ -55,7 +74,7 @@ namespace PomoLibrary.Model
 
             return stateToReturn;
         }
-        
+
         private PomoSessionType DetermineNextSessionType()
         {
             PomoSessionType sessionTypeToReturn = PomoSessionType.Work;

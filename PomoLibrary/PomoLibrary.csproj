@@ -135,6 +135,7 @@
     <Compile Include="Services\MenuButtonService.cs" />
     <Compile Include="Services\SessionService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Structs\NextSessionData.cs" />
     <Compile Include="Structs\PomoSessionLength.cs" />
     <Compile Include="Structs\PomoSessionSettings.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

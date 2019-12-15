@@ -3,6 +3,7 @@ using PomoLibrary.Enums;
 using PomoLibrary.Helpers;
 using PomoLibrary.Model;
 using PomoLibrary.Services;
+using PomoLibrary.Structs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,23 +56,6 @@ namespace PomoLibrary.ViewModel
                 NotifyPropertyChanged();
             }
         }
-
-        private string _sessionText;
-
-        public string SessionText
-        {
-            get { return _sessionText; }
-            set
-            {
-                if (_sessionText != value)
-                {
-                    _sessionText = value;
-                    NotifyPropertyChanged();
-
-                }
-            }
-        }
-
       
         private double _sessionInverseProgress;
 
@@ -101,15 +85,8 @@ namespace PomoLibrary.ViewModel
         public MainViewModel()
         {
             CurrentSessionState = PomoSessionState.Stopped;
-            
-            SessionText = "";
-            ResetSessionInverseProgress();
         }
 
-        private void ResetSessionInverseProgress()
-        {
-            SessionInverseProgress = 100;
-        }
 
         private void FillInDetailsFromSession()
         {
@@ -118,24 +95,53 @@ namespace PomoLibrary.ViewModel
             CurrentSession.StateChanged += CurrentSession_StateChanged;
 
             // TODO: Adjust this to support the different Session Lengths for each session state
-            //_sessionLength = CalculateSessionLength()
-            //_sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.SessionLength.TimeInMilliseconds);
-            //CurrentSessionTime = _sessionLength;
+            _sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
+            CurrentSessionTime = _sessionLength;
         }
 
         private async void CurrentSession_SessionCompleted(object sender, EventArgs e)
         {
-            //CurrentSessionTime = new TimeSpan(0);
+            CurrentSessionTime = new TimeSpan(0);
             try
             {
-                //var sessionCompletedDialog = new SessionCompletedDialog(SessionText);
-                //await sessionCompletedDialog.ShowAsync();
+                var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSesionType);
+                sessionCompletedDialog.PrimaryButtonClick += SessionCompletedDialog_PrimaryButtonClick;
+                sessionCompletedDialog.CloseButtonClick += SessionCompletedDialog_CloseButtonClick;
+                await sessionCompletedDialog.ShowAsync();
             }
             catch (Exception)
             {
 
             }
 
+        }
+
+        // This means that the user wants to stop the whole session
+        private void SessionCompletedDialog_CloseButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
+
+        // This means that the user wants to continue the session
+        private void SessionCompletedDialog_PrimaryButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
+        {
+            ContinueSession();
+        }
+
+        private void ContinueSession()
+        {
+            NextSessionData nextSessionData = CurrentSession.GetNextSessionData();
+            if (nextSessionData.NextSessionState == PomoSessionState.Stopped)
+            {
+                // Session is completely over
+            }
+            else
+            {
+                // Apply next session data and start the next stage
+                CurrentSessionState = nextSessionData.NextSessionState;
+                _sessionLength = nextSessionData.NextSessionLength;
+                Resume();
+            }
         }
 
         private void CurrentSession_StateChanged(object sender, PomoSessionState newState)
@@ -155,7 +161,6 @@ namespace PomoLibrary.ViewModel
 
         internal void Start()
         {
-            SessionText = "";
             CurrentSession = new PomoSession();
             FillInDetailsFromSession();
         }
@@ -168,7 +173,6 @@ namespace PomoLibrary.ViewModel
         internal void Stop()
         {
             CurrentSession.StopSession();
-            ResetSessionInverseProgress();
         }
 
         private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)

@@ -123,6 +123,9 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\SessionCompletedDialog.xaml.cs">
+      <DependentUpon>SessionCompletedDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Enums\PomoSessionType.cs" />
     <Compile Include="Helpers\AnimationHelper.cs" />
     <Compile Include="Helpers\ReviewHelper.cs" />
@@ -153,6 +156,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Dialogs\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\SessionCompletedDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

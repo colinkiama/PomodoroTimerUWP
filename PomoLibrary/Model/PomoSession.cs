@@ -30,10 +30,22 @@ namespace PomoLibrary.Model
             SessionSettings = loadedSessionSettings;
             CurrentSessionState = PomoSessionState.Stopped;
             CurrentSesionType = PomoSessionType.Work;
-            Timer = new SessionTimer(SessionSettings.WorkSessionLength);
             SessionNumber = 1;
+            Timer = new SessionTimer(SessionSettings.WorkSessionLength);
+            Timer.TimerTicked += Timer_TimerTicked;
+            Timer.TimerEnded += Timer_TimerEnded;
         }
 
+        private void Timer_TimerEnded(object sender, EventArgs e)
+        {
+            StopSession();
+            SessionCompleted?.Invoke(sender, e);
+        }
+
+        private void Timer_TimerTicked(object sender, TimeSpan e)
+        {
+            TimerTicked?.Invoke(sender, e);
+        }
 
         internal NextSessionData GetNextSessionData()
         {
@@ -60,7 +72,6 @@ namespace PomoLibrary.Model
                     case PomoSessionType.LongBreak:
                         lengthToReturn = TimeSpan.FromMilliseconds(SessionSettings.LongBreakSessionLength.TimeInMilliseconds);
                         break;
-
                 }
             }
             return lengthToReturn;
@@ -105,17 +116,38 @@ namespace PomoLibrary.Model
 
         internal bool StartSession()
         {
-            throw new NotImplementedException();
+            bool hasStarted = Timer.StartTimer();
+            if (hasStarted)
+            {
+                CurrentSessionState = PomoSessionState.InProgress;
+                StateChanged?.Invoke(this, CurrentSessionState);
+            }
+            return hasStarted;
         }
 
-        internal void PauseSession()
+        public void PauseSession()
         {
-            throw new NotImplementedException();
+            Timer.StopTimer();
+            CurrentSessionState = PomoSessionState.Paused;
+            StateChanged?.Invoke(this, CurrentSessionState);
         }
 
-        internal void StopSession()
+        public void StopSession()
         {
-            throw new NotImplementedException();
+            Timer.StopTimer();
+            CurrentSessionState = PomoSessionState.Stopped;
+            StateChanged?.Invoke(this, CurrentSessionState);
+        }
+
+        public bool ResumeSession()
+        {
+            bool hasStarted = Timer.StartTimer();
+            if (hasStarted)
+            {
+                CurrentSessionState = PomoSessionState.InProgress;
+                StateChanged?.Invoke(this, CurrentSessionState);
+            }
+            return hasStarted;
         }
     }
 }

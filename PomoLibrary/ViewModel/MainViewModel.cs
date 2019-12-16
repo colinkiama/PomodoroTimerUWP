@@ -119,7 +119,7 @@ namespace PomoLibrary.ViewModel
         // This means that the user wants to stop the whole session
         private void SessionCompletedDialog_CloseButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
         {
-            throw new NotImplementedException();
+            CreateNewSession();
         }
 
         // This means that the user wants to continue the session
@@ -134,6 +134,7 @@ namespace PomoLibrary.ViewModel
             if (nextSessionData.NextSessionState == PomoSessionState.Stopped)
             {
                 // Session is completely over
+                CreateNewSession();
             }
             else
             {
@@ -159,6 +160,12 @@ namespace PomoLibrary.ViewModel
         }
 
         internal void Start()
+        {
+            CreateNewSession();
+            CurrentSession.StartSession();
+        }
+
+        private void CreateNewSession()
         {
             CurrentSession = new PomoSession();
             FillInDetailsFromSession();

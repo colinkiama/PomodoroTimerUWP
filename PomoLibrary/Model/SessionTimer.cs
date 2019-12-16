@@ -28,6 +28,12 @@ namespace PomoLibrary.Model
             timesToTick = (int)Math.Ceiling(sessionTime.TimeInMilliseconds / timer.Interval.TotalMilliseconds);
         }
 
+        public void SetTimer(TimeSpan timeToRunFor)
+        {
+            timesTicked = 0;
+            timesToTick = (int)Math.Ceiling(timeToRunFor.TotalMilliseconds / timer.Interval.TotalMilliseconds);
+        }
+
         private void Timer_Tick(object sender, object e)
         {
             timesTicked++;

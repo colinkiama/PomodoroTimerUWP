@@ -13,11 +13,11 @@ namespace PomoLibrary.Model
     {
         private NextSessionData _nextSessionCache;
         public int SessionNumber { get; set; }
-        public PomoSessionType CurrentSesionType { get; set; }
+        public PomoSessionType CurrentSessionType { get; set; }
         public PomoSessionState CurrentSessionState { get; set; }
         public PomoSessionSettings SessionSettings { get; set; }
         public SessionTimer Timer { get; set; }
-        
+
 
 
         public event EventHandler<TimeSpan> TimerTicked;
@@ -29,7 +29,7 @@ namespace PomoLibrary.Model
             var loadedSessionSettings = SettingsService.Instance.SessionSettings;
             SessionSettings = loadedSessionSettings;
             CurrentSessionState = PomoSessionState.Stopped;
-            CurrentSesionType = PomoSessionType.Work;
+            CurrentSessionType = PomoSessionType.Work;
             SessionNumber = 1;
             Timer = new SessionTimer(SessionSettings.WorkSessionLength);
             Timer.TimerTicked += Timer_TimerTicked;
@@ -91,7 +91,7 @@ namespace PomoLibrary.Model
         private PomoSessionType DetermineNextSessionType()
         {
             PomoSessionType sessionTypeToReturn = PomoSessionType.Work;
-            switch (CurrentSesionType)
+            switch (CurrentSessionType)
             {
                 case PomoSessionType.Work:
                     if (SessionNumber + 1 == SessionSettings.NumberOfSessions)
@@ -116,13 +116,34 @@ namespace PomoLibrary.Model
 
         internal bool StartSession()
         {
-            bool hasStarted = Timer.StartTimer();
-            if (hasStarted)
+            bool hasStarted = false;
+
+            if (_nextSessionCache.NextSessionLength != TimeSpan.FromMilliseconds(0))
             {
-                CurrentSessionState = PomoSessionState.InProgress;
+                CurrentSessionState = _nextSessionCache.NextSessionState;
                 StateChanged?.Invoke(this, CurrentSessionState);
+                CurrentSessionType = _nextSessionCache.NextSessionType;
+                Timer.SetTimer(_nextSessionCache.NextSessionLength);
+                hasStarted = Timer.StartTimer();
+                SessionNumber++;
+                ClearNextSessionCache();
             }
+            else
+            {
+                hasStarted = Timer.StartTimer();
+                if (hasStarted)
+                {
+                    CurrentSessionState = PomoSessionState.InProgress;
+                    StateChanged?.Invoke(this, CurrentSessionState);
+                }
+            }
+
             return hasStarted;
+        }
+
+        private void ClearNextSessionCache()
+        {
+            _nextSessionCache = default;
         }
 
         public void PauseSession()

@@ -104,7 +104,7 @@ namespace PomoLibrary.ViewModel
             CurrentSessionTime = new TimeSpan(0);
             try
             {
-                var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSesionType);
+                var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSessionType);
                 sessionCompletedDialog.PrimaryButtonClick += SessionCompletedDialog_PrimaryButtonClick;
                 sessionCompletedDialog.CloseButtonClick += SessionCompletedDialog_CloseButtonClick;
                 await sessionCompletedDialog.ShowAsync();
@@ -138,7 +138,6 @@ namespace PomoLibrary.ViewModel
             else
             {
                 // Apply next session data and start the next stage
-                CurrentSessionState = nextSessionData.NextSessionState;
                 _sessionLength = nextSessionData.NextSessionLength;
                 Resume();
             }

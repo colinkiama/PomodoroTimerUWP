@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
+using PomoLibrary.ViewModel;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace PomodoroTimerUWPLite.Views
@@ -22,9 +22,11 @@ namespace PomodoroTimerUWPLite.Views
     /// </summary>
     public sealed partial class MainView : Page
     {
+        private MainViewModel _viewModel;
         public MainView()
         {
             this.InitializeComponent();
+            _viewModel = new MainViewModel();
         }
     }
 }

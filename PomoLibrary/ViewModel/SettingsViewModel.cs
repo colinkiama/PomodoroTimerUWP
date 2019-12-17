@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PomoLibrary.ViewModel
 {
-    class SettingsViewModel : Notifier
+    public class SettingsViewModel : Notifier
     {
 
         private int _workSessionLength;

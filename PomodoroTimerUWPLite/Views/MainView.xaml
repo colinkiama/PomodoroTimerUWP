@@ -5,8 +5,12 @@
     xmlns:local="using:PomodoroTimerUWPLite.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:PomoLibrary.Converters"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <converters:SessionStateToPlayPauseLabel x:Key="PlayPauseLabelConv"/>
+        <converters:SessionStateToGlyph x:Key="StateToGlyphConv"/>
+    </Page.Resources>
     <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid>
             <Grid.RowDefinitions>
@@ -34,8 +38,10 @@
                         HorizontalAlignment="Center"
                         Margin="0,40,0,0"
                         FontFamily="Segoe MDL2 Assets"
-                        Content="&#xE769;"
-                        FontSize="32">
+                        Content="{x:Bind _viewModel.CurrentSessionState, Mode=OneWay, Converter={StaticResource StateToGlyphConv}}"
+                        FontSize="32"
+                        ToolTipService.ToolTip="{x:Bind _viewModel.CurrentSessionState, Mode=OneWay, Converter={StaticResource PlayPauseLabelConv}}"
+                        Command="{x:Bind _viewModel.PlayPauseCommand, Mode=OneWay}">
                 </Button>
             </StackPanel>
             <RelativePanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,40,0,0">

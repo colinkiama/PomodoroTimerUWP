@@ -1,4 +1,5 @@
-﻿using PomoLibrary.Dialogs;
+﻿using PomoLibrary.Commands;
+using PomoLibrary.Dialogs;
 using PomoLibrary.Enums;
 using PomoLibrary.Helpers;
 using PomoLibrary.Model;
@@ -15,8 +16,21 @@ using Windows.UI.Xaml;
 
 namespace PomoLibrary.ViewModel
 {
-    class MainViewModel : Notifier
+    public class MainViewModel : Notifier
     {
+
+        private RelayCommand _playPauseCommand;
+
+        public RelayCommand PlayPauseCommand
+        {
+            get { return _playPauseCommand; }
+            set
+            {
+                _playPauseCommand = value;
+                NotifyPropertyChanged();
+            }
+        }
+
 
         private TimeSpan _sessionLength;
 
@@ -56,7 +70,7 @@ namespace PomoLibrary.ViewModel
                 NotifyPropertyChanged();
             }
         }
-      
+
         private double _sessionInverseProgress;
 
         public double SessionInverseProgress
@@ -85,8 +99,24 @@ namespace PomoLibrary.ViewModel
         public MainViewModel()
         {
             CurrentSessionState = PomoSessionState.Stopped;
+            PlayPauseCommand = new RelayCommand(PlayPauseCommandCalled);
         }
 
+        private void PlayPauseCommandCalled()
+        {
+            switch (CurrentSessionState)
+            {
+                case PomoSessionState.InProgress:
+                    Pause();
+                    break;
+                case PomoSessionState.Paused:
+                    Resume();
+                    break;
+                case PomoSessionState.Stopped:
+                    Start();
+                    break;
+            }
+        }
 
         private void FillInDetailsFromSession()
         {
@@ -152,7 +182,7 @@ namespace PomoLibrary.ViewModel
 
         internal void Resume()
         {
-           bool resumedSession = CurrentSession.StartSession();
+            bool resumedSession = CurrentSession.StartSession();
             if (!resumedSession)
             {
                 // Session has been completely done!

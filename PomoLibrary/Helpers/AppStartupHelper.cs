@@ -8,7 +8,7 @@ using Windows.UI.ViewManagement;
 
 namespace PomoLibrary.Helpers
 {
-    public class AppStartupHelper
+    public static class AppStartupHelper
     {
         public static async Task AppStartupAsync()
         {

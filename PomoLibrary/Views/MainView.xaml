@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="PomodoroTimerUWPLite.Views.MainView"
+    x:Class="PomoLibrary.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:PomodoroTimerUWPLite.Views"
+    xmlns:local="using:PomoLibrary.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:PomoLibrary.Converters"
@@ -14,7 +14,7 @@
         <converters:FormattedTimeConverter x:Key="FormatTimeConv"/>
         <converters:SessionTypeToString x:Key="SessionTypeToStringConv"/>
     </Page.Resources>
-    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer Background="Transparent">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

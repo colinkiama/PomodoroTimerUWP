@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PomoLibrary.Views;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace PomodoroTimerUWPLite.Views
         public ShellView()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            MainFrame.Navigate(typeof(MainView));
         }
     }
 }

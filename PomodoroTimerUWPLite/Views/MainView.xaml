@@ -47,7 +47,7 @@
                         Command="{x:Bind _viewModel.PlayPauseCommand}">
                 </Button>
             </StackPanel>
-            <RelativePanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,40,0,0">
+            <RelativePanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,40">
                 <TextBlock x:Name="SessionTypeTextBlock"
                            RelativePanel.AlignHorizontalCenterWithPanel="True"
                            Margin="0,0,0,16"
@@ -62,7 +62,7 @@
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
                 <Button x:Name="MiniViewButton" RelativePanel.RightOf="ResetSessionButton"
                         RelativePanel.Below="SessionTypeTextBlock"
-                        Margin="16,0,0,40"
+                        Margin="16,0,0,0"
                         FontSize="32"
                         FontFamily="Segoe MDL2 Assets"
                         Content="&#xE2B3;"

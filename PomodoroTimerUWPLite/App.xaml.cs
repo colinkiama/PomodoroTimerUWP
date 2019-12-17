@@ -1,4 +1,5 @@
 ﻿using PomodoroTimerUWPLite.Views;
+using PomoLibrary.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,8 +39,9 @@ namespace PomodoroTimerUWPLite
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            await AppStartupHelper.AppStartupAsync();
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

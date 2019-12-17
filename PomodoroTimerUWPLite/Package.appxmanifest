@@ -8,8 +8,8 @@
 
   <Identity
     Name="1123876c-5570-465b-9a2f-f0b1f8562080"
-    Publisher="CN=colin"
-    Version="1.0.0.0" />
+    Publisher="CN=D2DBA6D7-296F-484A-BABE-2B76C9C2AF78"
+    Version="0.5.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="1123876c-5570-465b-9a2f-f0b1f8562080" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

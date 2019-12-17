@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="Enums\PomoSessionType.cs" />
     <Compile Include="Helpers\AnimationHelper.cs" />
+    <Compile Include="Helpers\AppStartupHelper.cs" />
     <Compile Include="Helpers\ReviewHelper.cs" />
     <Compile Include="Model\SessionTimer.cs" />
     <Compile Include="Enums\PomoSessionState.cs" />

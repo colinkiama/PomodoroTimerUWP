@@ -23,6 +23,7 @@ namespace PomoLibrary.Model
         public event EventHandler<TimeSpan> TimerTicked;
         public event EventHandler SessionCompleted;
         public event EventHandler<PomoSessionState> StateChanged;
+        public event EventHandler<PomoSessionType> TypeChanged;
 
         public PomoSession()
         {
@@ -123,6 +124,7 @@ namespace PomoLibrary.Model
                 CurrentSessionState = _nextSessionCache.NextSessionState;
                 StateChanged?.Invoke(this, CurrentSessionState);
                 CurrentSessionType = _nextSessionCache.NextSessionType;
+                TypeChanged?.Invoke(this, CurrentSessionType);
                 Timer.SetTimer(_nextSessionCache.NextSessionLength);
                 hasStarted = Timer.StartTimer();
                 SessionNumber++;

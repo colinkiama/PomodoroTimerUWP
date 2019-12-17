@@ -96,6 +96,21 @@ namespace PomoLibrary.ViewModel
         }
 
 
+        private PomoSessionType _currentSessionType;
+
+        public PomoSessionType CurrentSessionType
+        {
+            get { return _currentSessionType; }
+            set
+            {
+                _currentSessionType = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+
+
         public MainViewModel()
         {
             CurrentSessionState = PomoSessionState.Stopped;
@@ -123,10 +138,16 @@ namespace PomoLibrary.ViewModel
             CurrentSession.TimerTicked += CurrentSession_TimerTicked;
             CurrentSession.SessionCompleted += CurrentSession_SessionCompleted;
             CurrentSession.StateChanged += CurrentSession_StateChanged;
+            CurrentSession.TypeChanged += CurrentSession_TypeChanged;
 
             // TODO: Adjust this to support the different Session Lengths for each session state
             _sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
             CurrentSessionTime = _sessionLength;
+        }
+
+        private void CurrentSession_TypeChanged(object sender, PomoSessionType newSessionType)
+        {
+            CurrentSessionType = newSessionType;
         }
 
         private async void CurrentSession_SessionCompleted(object sender, EventArgs e)

@@ -10,6 +10,8 @@
     <Page.Resources>
         <converters:SessionStateToPlayPauseLabel x:Key="PlayPauseLabelConv"/>
         <converters:SessionStateToGlyph x:Key="StateToGlyphConv"/>
+        <converters:FormattedTimeConverter x:Key="FormatTimeConv"/>
+        <converters:SessionTypeToString x:Key="SessionTypeToStringConv"/>
     </Page.Resources>
     <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid>
@@ -29,7 +31,7 @@
                 <TextBlock x:Name ="TimeRemianingTitleTextBlock" Text="Time Remaining:"
                            FontSize="24"
                            HorizontalAlignment="Center"/>
-                <TextBlock x:Name="TimeRemainingTextBlock" Text="20:00" RelativePanel.Below="TimeRemianingTitleTextBlock"
+                <TextBlock x:Name="TimeRemainingTextBlock" Text="{x:Bind _viewModel.CurrentSessionTime, Mode=OneWay, Converter={StaticResource FormatTimeConv}}" RelativePanel.Below="TimeRemianingTitleTextBlock"
                            FontSize="60"
                            HorizontalAlignment="Center"
                            FontWeight="SemiBold"/>
@@ -45,10 +47,11 @@
                 </Button>
             </StackPanel>
             <RelativePanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,40,0,0">
-                <TextBlock x:Name="SessionTypeTextBlock" Text="Break"
+                <TextBlock x:Name="SessionTypeTextBlock"
                            RelativePanel.AlignHorizontalCenterWithPanel="True"
                            Margin="0,0,0,16"
-                           FontSize="20"/>
+                           FontSize="20"
+                           Text="{x:Bind _viewModel.CurrentSessionType, Mode=OneWay, Converter={StaticResource SessionTypeToStringConv}}"/>
                 <Button x:Name="ResetSessionButton"
                         RelativePanel.Below="SessionTypeTextBlock"
                         FontSize="32"

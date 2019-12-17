@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace PomoLibrary.ViewModel
+namespace PomoLibrary.Common
 {
     public abstract class Notifier : INotifyPropertyChanged
     {

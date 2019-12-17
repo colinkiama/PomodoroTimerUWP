@@ -1,4 +1,5 @@
 ﻿using PomoLibrary.Commands;
+using PomoLibrary.Common;
 using PomoLibrary.Dialogs;
 using PomoLibrary.Enums;
 using PomoLibrary.Helpers;
@@ -18,18 +19,7 @@ namespace PomoLibrary.ViewModel
 {
     public class MainViewModel : Notifier
     {
-
-        private RelayCommand _playPauseCommand;
-
-        public RelayCommand PlayPauseCommand
-        {
-            get { return _playPauseCommand; }
-            set
-            {
-                _playPauseCommand = value;
-                NotifyPropertyChanged();
-            }
-        }
+        public RelayCommand PlayPauseCommand { get; private set; }
 
 
         private TimeSpan _sessionLength;

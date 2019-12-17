@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:PomoLibrary.Converters"
+    xmlns:services="using:PomoLibrary.Services"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:SessionStateToPlayPauseLabel x:Key="PlayPauseLabelConv"/>
@@ -43,7 +44,7 @@
                         Content="{x:Bind _viewModel.CurrentSessionState, Mode=OneWay, Converter={StaticResource StateToGlyphConv}}"
                         FontSize="32"
                         ToolTipService.ToolTip="{x:Bind _viewModel.CurrentSessionState, Mode=OneWay, Converter={StaticResource PlayPauseLabelConv}}"
-                        Command="{x:Bind _viewModel.PlayPauseCommand, Mode=OneWay}">
+                        Command="{x:Bind _viewModel.PlayPauseCommand}">
                 </Button>
             </StackPanel>
             <RelativePanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,40,0,0">
@@ -66,7 +67,8 @@
                         FontFamily="Segoe MDL2 Assets"
                         Content="&#xE2B3;"
                         Style="{StaticResource TextBlockButtonStyle}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
+                        Command="{x:Bind services:MiniViewService.Instance.ToggleMiniViewCommand}"/>
             </RelativePanel>
         </Grid>
     </ScrollViewer>

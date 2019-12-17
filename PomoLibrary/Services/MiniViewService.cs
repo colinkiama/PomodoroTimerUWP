@@ -18,6 +18,8 @@ namespace PomoLibrary.Services
 
         private ApplicationView _appView;
 
+        public RelayCommand ToggleMiniViewCommand { get; set; }
+
         // Singleton Pattern with "Lazy"
         private static Lazy<MiniViewService> lazy =
             new Lazy<MiniViewService>(() => new MiniViewService());
@@ -35,21 +37,23 @@ namespace PomoLibrary.Services
             bool wasMiniViewOptionAvailable = false;
             if (ApiInformation.IsEnumNamedValuePresent("Windows.UI.ViewManagement.ApplicationViewMode", "CompactOverlay"))
             {
-                wasMiniViewOptionAvailable = true;
+                if (_appView.IsViewModeSupported(ApplicationViewMode.CompactOverlay))
+                {
+                    wasMiniViewOptionAvailable = true;
+                }
             }
-            
+
             return wasMiniViewOptionAvailable;
         }
+
         private async Task TryToggleMiniViewAsync()
         {
             if (IsMiniViewOptionAvailable)
             {
-                if (_appView.IsViewModeSupported(ApplicationViewMode.CompactOverlay))
-                {
-                    await ToggleMiniViewAsync();
-                }
+                await ToggleMiniViewAsync();
             }
         }
+
 
         private async Task ToggleMiniViewAsync()
         {
@@ -77,7 +81,6 @@ namespace PomoLibrary.Services
             }
         }
 
-        public RelayCommand ToggleMiniViewCommand { get; set; }
 
     }
 }

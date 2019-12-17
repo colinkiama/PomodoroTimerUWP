@@ -19,7 +19,7 @@
                 <TextBlock Text="1/10" x:Name="SessionProgressTextBlock" HorizontalAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Row="1"
-                        Margin="0,0,0,120"
+                        Margin="0,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                 <TextBlock x:Name ="TimeRemianingTitleTextBlock" Text="Time Remaining:"
@@ -27,16 +27,38 @@
                            HorizontalAlignment="Center"/>
                 <TextBlock x:Name="TimeRemainingTextBlock" Text="20:00" RelativePanel.Below="TimeRemianingTitleTextBlock"
                            FontSize="60"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center"
+                           FontWeight="SemiBold"/>
                 <Button x:Name="PausePlayButton" Style="{StaticResource TextBlockButtonStyle}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         HorizontalAlignment="Center"
-                        Margin="0,20,0,0"
+                        Margin="0,40,0,0"
                         FontFamily="Segoe MDL2 Assets"
                         Content="&#xE769;"
                         FontSize="32">
                 </Button>
             </StackPanel>
+            <RelativePanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,40,0,0">
+                <TextBlock x:Name="SessionTypeTextBlock" Text="Break"
+                           RelativePanel.AlignHorizontalCenterWithPanel="True"
+                           Margin="0,0,0,16"
+                           FontSize="20"/>
+                <Button x:Name="ResetSessionButton"
+                        RelativePanel.Below="SessionTypeTextBlock"
+                        FontSize="32"
+                        FontFamily="Segoe MDL2 Assets"
+                        Content="&#xE72C;"
+                        Style="{StaticResource TextBlockButtonStyle}"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                <Button x:Name="MiniViewButton" RelativePanel.RightOf="ResetSessionButton"
+                        RelativePanel.Below="SessionTypeTextBlock"
+                        Margin="16,0,0,40"
+                        FontSize="32"
+                        FontFamily="Segoe MDL2 Assets"
+                        Content="&#xE2B3;"
+                        Style="{StaticResource TextBlockButtonStyle}"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+            </RelativePanel>
         </Grid>
     </ScrollViewer>
 </Page>

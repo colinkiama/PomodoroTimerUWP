@@ -7,12 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation.Metadata;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 
 namespace PomoLibrary.Services
 {
     public class MiniViewService : Notifier
     {
-        private ApplicationView _appView = ApplicationView.GetForCurrentView();
+
+        public bool IsMiniViewOptionAvailable = false;
+
+        private ApplicationView _appView;
 
         // Singleton Pattern with "Lazy"
         private static Lazy<MiniViewService> lazy =
@@ -21,12 +25,24 @@ namespace PomoLibrary.Services
         public static MiniViewService Instance => lazy.Value;
         private MiniViewService()
         {
+            _appView = ApplicationView.GetForCurrentView();
+            IsMiniViewOptionAvailable = DetermineIfMiniViewOptionIsVisible();
             ToggleMiniViewCommand = new RelayCommand(async () => await TryToggleMiniViewAsync());
         }
 
+        private bool DetermineIfMiniViewOptionIsVisible()
+        {
+            bool wasMiniViewOptionAvailable = false;
+            if (ApiInformation.IsEnumNamedValuePresent("Windows.UI.ViewManagement.ApplicationViewMode", "CompactOverlay"))
+            {
+                wasMiniViewOptionAvailable = true;
+            }
+            
+            return wasMiniViewOptionAvailable;
+        }
         private async Task TryToggleMiniViewAsync()
         {
-            if (ApiInformation.IsEnumNamedValuePresent("Windows.UI.ViewManagement.ApplicationViewMode", "CompactOverlay"))
+            if (IsMiniViewOptionAvailable)
             {
                 if (_appView.IsViewModeSupported(ApplicationViewMode.CompactOverlay))
                 {

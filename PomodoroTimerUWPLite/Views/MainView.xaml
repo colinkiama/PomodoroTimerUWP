@@ -68,7 +68,8 @@
                         Content="&#xE2B3;"
                         Style="{StaticResource TextBlockButtonStyle}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        Command="{x:Bind services:MiniViewService.Instance.ToggleMiniViewCommand}"/>
+                        Command="{x:Bind services:MiniViewService.Instance.ToggleMiniViewCommand}"
+                        Visibility="{x:Bind services:MiniViewService.Instance.IsMiniViewOptionAvailable}"/>
             </RelativePanel>
         </Grid>
     </ScrollViewer>

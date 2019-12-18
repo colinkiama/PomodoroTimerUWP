@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="1123876c-5570-465b-9a2f-f0b1f8562080"
+    Name="64942ColinKiama.PomodoroTimerUWP"
     Publisher="CN=D2DBA6D7-296F-484A-BABE-2B76C9C2AF78"
-    Version="0.5.1.0" />
+    Version="2.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="1123876c-5570-465b-9a2f-f0b1f8562080" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="6bdafdd6-9425-4f2c-af9f-68b7a3e2c77a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>PomodoroTimerUWPLite</DisplayName>
-    <PublisherDisplayName>colin</PublisherDisplayName>
+    <DisplayName>Pomodoro Timer UWP</DisplayName>
+    <PublisherDisplayName>Colin Kiama</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="PomodoroTimerUWPLite.App">
       <uap:VisualElements
-        DisplayName="PomodoroTimerUWPLite"
+        DisplayName="Pomodoro Timer UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="PomodoroTimerUWPLite"

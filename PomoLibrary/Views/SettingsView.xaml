@@ -2,7 +2,7 @@
     x:Class="PomoLibrary.View.SettingsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DysproseTwo.View"
+    xmlns:local="using:PomoLibrary.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -14,30 +14,70 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Menu"
+        <TextBlock Text="Settings"
                    HorizontalAlignment="Center"
                    FontSize="24"
                    FontWeight="SemiBold"/>
 
-        <ScrollViewer Grid.Row="1" Margin="0,20,0,0" Name="SettingsScrollViewer">
+        <ScrollViewer Grid.Row="1" Margin="0,20,0,0" Name="SettingsScrollViewer"
+                      Padding="20,0">
             <StackPanel HorizontalAlignment="Left">
-                <TextBlock Text="Settings" FontWeight="SemiBold"
+                <!--Work-->
+                <TextBlock Text="Session Settings" FontWeight="SemiBold"
                        FontSize="20"
                        />
-                <TextBox Header="Session Length:" Margin="0,20,0,0"
+                <TextBox Header="Work Session Length:" Margin="0,20,0,0"
                          Text="{x:Bind _viewModel.WorkSessionLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
-                <ComboBox x:Name="TimeUnitComboBox"
+                <ComboBox x:Name="WorkSessionTimeUnitComboBox"
                       Margin="0,8,0,0"
                           ItemsSource="{x:Bind _viewModel.TimeUnits}"
                           SelectedItem="{x:Bind _viewModel.WorkSessionTimeUnit, Mode=TwoWay}"
                           IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
+
+                <!--Break-->
+                <TextBox Header="Break Session Length:" Margin="0,20,0,0"
+                         Text="{x:Bind _viewModel.BreakSessionLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
+                <ComboBox x:Name="BreakSessionTimeUnitComboBox"
+                      Margin="0,8,0,0"
+                          ItemsSource="{x:Bind _viewModel.TimeUnits}"
+                          SelectedItem="{x:Bind _viewModel.BreakSessionTimeUnit, Mode=TwoWay}"
+                          IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
+
+                <!--LongBreak-->
+                <TextBox Header="Session Length:" Margin="0,20,0,0"
+                         Text="{x:Bind _viewModel.LongBreakSessionLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
+                <ComboBox x:Name="LongBreakSessionTimeUnitComboBox"
+                      Margin="0,8,0,0"
+                          ItemsSource="{x:Bind _viewModel.TimeUnits}"
+                          SelectedItem="{x:Bind _viewModel.LongBreakSessionTimeUnit, Mode=TwoWay}"
+                          IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
+
+                <!--Data Settings-->
+                <TextBlock Text="Data Settings" FontWeight="SemiBold"
+                       FontSize="20"
+                       Margin="0,40,0,0"/>
+                <Button x:Name="ClearDataButton"
+                        Content="Clear Data"
+                        Margin="0,20,0,0"/>
+                <Button x:Name="SyncDataButton"
+                        Content="Sync Data"
+                        Margin="0,12,0,0"/>
+                <TextBlock Text="Last Synced Time:"
+                           FontWeight="SemiBold"
+                           Margin="0,12,0,0"/>
+                <TextBlock x:Name="LastSyncedTimeTextBlock"
+                           Text="23/01/2019 - 20:19"
+                           Margin="0,4,0,0"/>
             </StackPanel>
         </ScrollViewer>
         <Button Grid.Row="2" Content="About"
                 HorizontalAlignment="Right"
                 Name="AboutButton"
-                Click="AboutButton_Click">
+                Click="AboutButton_Click"
+                Margin="0,0,20,20">
 
         </Button>
 

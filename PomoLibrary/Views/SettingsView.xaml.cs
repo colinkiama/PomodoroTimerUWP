@@ -50,17 +50,6 @@ namespace PomoLibrary.View
             }
         }
 
-        private void FullScreenModeButton_Click(object sender, RoutedEventArgs e)
-        {
-            var appView = ApplicationView.GetForCurrentView();
-            if (appView.IsFullScreenMode)
-            {
-                appView.ExitFullScreenMode();
-            }
-            else
-            {
-                appView.TryEnterFullScreenMode();
-            }
-        }
+       
     }
 }

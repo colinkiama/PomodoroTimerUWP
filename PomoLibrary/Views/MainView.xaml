@@ -59,7 +59,8 @@
                         FontFamily="Segoe MDL2 Assets"
                         Content="&#xE72C;"
                         Style="{StaticResource TextBlockButtonStyle}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
+                        Command="{x:Bind _viewModel.ResetCommand}"/>
                 <Button x:Name="MiniViewButton" RelativePanel.RightOf="ResetSessionButton"
                         RelativePanel.Below="SessionTypeTextBlock"
                         Margin="16,0,0,0"

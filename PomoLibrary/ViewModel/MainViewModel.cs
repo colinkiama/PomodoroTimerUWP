@@ -21,6 +21,7 @@ namespace PomoLibrary.ViewModel
     {
         public RelayCommand PlayPauseCommand { get; private set; }
 
+        public RelayCommand ResetCommand { get; private set; }
 
         private TimeSpan _sessionLength;
 
@@ -105,6 +106,12 @@ namespace PomoLibrary.ViewModel
         {
             CurrentSessionState = PomoSessionState.Stopped;
             PlayPauseCommand = new RelayCommand(PlayPauseCommandCalled);
+            ResetCommand = new RelayCommand(ResetCommandCalled);
+        }
+
+        private void ResetCommandCalled()
+        {
+            CreateNewSession();
         }
 
         private void PlayPauseCommandCalled()

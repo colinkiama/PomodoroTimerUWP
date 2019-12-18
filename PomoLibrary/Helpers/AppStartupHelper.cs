@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PomoLibrary.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace PomoLibrary.Helpers
         {
             var _appView = ApplicationView.GetForCurrentView();
             _appView.SetPreferredMinSize(new Size(192,192));
+            await SettingsService.Instance.LoadSettingsAsync();
         }
     }
 }

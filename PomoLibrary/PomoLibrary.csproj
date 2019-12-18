@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\BoolToMiniViewGlyh.cs" />
     <Compile Include="Converters\FormattedTimeConverter.cs" />
     <Compile Include="Converters\SessionStateToPlayPauseLabel.cs" />
     <Compile Include="Converters\SessionStateToGlyph.cs" />

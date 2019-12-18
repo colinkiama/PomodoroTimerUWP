@@ -14,6 +14,7 @@ namespace PomoLibrary.Services
     public class MiniViewService : Notifier
     {
 
+
         public bool IsMiniViewOptionAvailable = false;
 
         private ApplicationView _appView;
@@ -24,10 +25,27 @@ namespace PomoLibrary.Services
         private static Lazy<MiniViewService> lazy =
             new Lazy<MiniViewService>(() => new MiniViewService());
 
+
+
+
+        private bool _isInMiniView;
+
+        public bool IsInMiniView
+        {
+            get { return _isInMiniView; }
+            set
+            {
+                _isInMiniView = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         public static MiniViewService Instance => lazy.Value;
         private MiniViewService()
         {
             _appView = ApplicationView.GetForCurrentView();
+            IsInMiniView = false;
             IsMiniViewOptionAvailable = DetermineIfMiniViewOptionIsVisible();
             ToggleMiniViewCommand = new RelayCommand(async () => await TryToggleMiniViewAsync());
         }
@@ -60,27 +78,14 @@ namespace PomoLibrary.Services
             switch (_appView.ViewMode)
             {
                 case ApplicationViewMode.Default:
-                    await _appView.TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
+                    IsInMiniView = await _appView.TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
                     break;
                 case ApplicationViewMode.CompactOverlay:
-                    await _appView.TryEnterViewModeAsync(ApplicationViewMode.Default);
+                    IsInMiniView = !(await _appView.TryEnterViewModeAsync(ApplicationViewMode.Default));
                     break;
 
             }
         }
-
-        private bool _isInMiniView;
-
-        public bool IsInMiniView
-        {
-            get { return _isInMiniView; }
-            set
-            {
-                _isInMiniView = value;
-                NotifyPropertyChanged();
-            }
-        }
-
 
     }
 }

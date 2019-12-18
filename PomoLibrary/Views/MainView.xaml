@@ -13,6 +13,7 @@
         <converters:SessionStateToGlyph x:Key="StateToGlyphConv"/>
         <converters:FormattedTimeConverter x:Key="FormatTimeConv"/>
         <converters:SessionTypeToString x:Key="SessionTypeToStringConv"/>
+        <converters:BoolToMiniViewGlyh x:Key="BoolToMiniViewGlyphConv"/>
     </Page.Resources>
     <ScrollViewer Background="Transparent">
         <Grid>
@@ -66,7 +67,7 @@
                         Margin="16,0,0,0"
                         FontSize="32"
                         FontFamily="Segoe MDL2 Assets"
-                        Content="&#xE2B3;"
+                        Content="{x:Bind services:MiniViewService.Instance.IsInMiniView, Mode=OneWay,Converter={StaticResource BoolToMiniViewGlyphConv}}"
                         Style="{StaticResource TextBlockButtonStyle}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         Command="{x:Bind services:MiniViewService.Instance.ToggleMiniViewCommand}"

@@ -30,14 +30,14 @@ namespace PomoLibrary.Converters
             {
                 sb.Append($"{hoursInTime}:");
             }
-            timeInSeconds -= hoursInTime;
+            timeInSeconds -= hoursInTime * secondsInHour;
 
 
             // Get Minutes
             int minutesInTime = (int)(timeInSeconds / secondsInMinute);
             
 
-            timeInSeconds -= minutesInTime;
+            timeInSeconds -= minutesInTime * secondsInMinute;
 
             // Get seconds and leave the rest
             int wholeSecondsLeft = (int)timeInSeconds;

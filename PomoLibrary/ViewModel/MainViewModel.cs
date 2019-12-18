@@ -111,6 +111,7 @@ namespace PomoLibrary.ViewModel
 
         private void ResetCommandCalled()
         {
+            Stop();
             CreateNewSession();
         }
 

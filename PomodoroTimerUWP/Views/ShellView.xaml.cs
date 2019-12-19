@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PomoLibrary.Helpers;
+using PomoLibrary.Views;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +24,41 @@ namespace PomodoroTimerUWP.Views
     /// </summary>
     public sealed partial class ShellView : Page
     {
+        bool _isMenuOpen = false;
+
         public ShellView()
         {
             this.InitializeComponent();
+            AnimationHelper.FrameSlideOutAnimationCompleted += AnimationHelper_FrameSlideOutAnimationCompleted;
+        }
+
+        private void AnimationHelper_FrameSlideOutAnimationCompleted(object sender, EventArgs e)
+        {
+            SettingsFrame.Visibility = Visibility.Collapsed;
+        }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            MainFrame.Navigate(typeof(MainView));
+            SettingsFrame.Navigate(typeof(SettingsView));
+            SettingsFrame.Visibility = Visibility.Collapsed;
+            await ReviewHelper.TryRequestReviewAsync();
+        }
+
+        private async void MenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMenuOpen)
+            {
+                MenuButtonService.Instance.CloseMenu();
+                await AnimationHelper.FrameSlideOutAnimation(SettingsFrame);
+
+            }
+            else
+            {
+                await AnimationHelper.FrameSlideInAnimation(SettingsFrame);
+            }
+            _isMenuOpen = !_isMenuOpen;
         }
     }
 }

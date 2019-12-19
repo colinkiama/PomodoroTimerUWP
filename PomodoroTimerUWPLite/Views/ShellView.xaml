@@ -8,6 +8,30 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Frame x:Name="MainFrame"></Frame>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Dysprose" Name="TitleBarTextBlock"
+                   Margin="16,12,0,0"
+                   FontSize="12"/>
+
+
+        <Grid Name="RootGrid" Grid.Row="1">
+            <Frame x:Name="MainFrame" />
+            <Frame x:Name="MenuFrame"/>
+            <Button Background="Transparent"
+                    Name="MenuButton"
+                    BorderThickness="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Grid.Row="1"
+                    Click="MenuButton_Click"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE700;"
+                    FontSize="20"
+                    Padding="16">
+            </Button>
+        </Grid>
     </Grid>
 </Page>

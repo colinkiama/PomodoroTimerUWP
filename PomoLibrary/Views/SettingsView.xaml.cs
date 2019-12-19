@@ -36,7 +36,11 @@ namespace PomoLibrary.Views
         {
             base.OnNavigatedTo(e);
             _viewModel.GetSettings();
+
         }
+
+
+        
        
     }
 }

@@ -12,6 +12,10 @@ namespace PomoLibrary.Services
         const string MenuGlyphString = "\xE700";
         const string BackGlyphString = "\xE830";
 
+        public event EventHandler MenuClosed;
+        public event EventHandler BackButtonClicked;
+
+
         // Singleton Pattern with "Lazy"
         private static Lazy<MenuButtonService> lazy =
             new Lazy<MenuButtonService>(() => new MenuButtonService());
@@ -35,11 +39,15 @@ namespace PomoLibrary.Services
             CurrentButtonGlyph = MenuGlyphString;
         }
 
-        public event EventHandler MenuClosed;
 
         public void CloseMenu()
         {
             MenuClosed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void GoBack()
+        {
+            BackButtonClicked?.Invoke(this, EventArgs.Empty);
         }
 
         public void NavigatedToMenu()

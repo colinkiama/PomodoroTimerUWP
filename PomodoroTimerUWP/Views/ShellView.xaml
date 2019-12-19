@@ -5,6 +5,7 @@
     xmlns:local="using:PomodoroTimerUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:PomoLibrary.Services"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
@@ -31,7 +32,7 @@
                 Grid.Row="1"
                     Click="MenuButton_Click"
                     FontFamily="Segoe MDL2 Assets"
-                    Content="&#xE700;"
+                    Content="{x:Bind services:MenuButtonService.Instance.CurrentButtonGlyph, Mode=OneWay}"
                     FontSize="16"
                     Padding="16"
                 Canvas.ZIndex="20">

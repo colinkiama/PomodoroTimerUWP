@@ -133,9 +133,15 @@ namespace PomoLibrary.ViewModel
 
         public SettingsViewModel()
         {
-            MenuButtonService.Instance.MenuClosed += Instance_MenuClosed;
+            MenuButtonService.Instance.NavigatedToMenuChild();
+            MenuButtonService.Instance.BackButtonClicked += Instance_BackButtonClicked;
             SessionService.Instance.SessionStateChanged += Instance_SessionStateChanged;
             IsSessionNotInProgress = true;
+        }
+
+        private void Instance_BackButtonClicked(object sender, EventArgs e)
+        {
+            SetSettings();
         }
 
         private void Instance_SessionStateChanged(object sender, PomoSessionState sessionState)
@@ -157,11 +163,6 @@ namespace PomoLibrary.ViewModel
             BreakSessionLength = new PomoSessionLength { Length = _breakSessionLength, UnitOfLength = _breakSessionTimeUnit },
             LongBreakSessionLength = new PomoSessionLength { Length = _longBreakSessionLength, UnitOfLength = _longBreakSessionTimeUnit },
         };
-
-        private void Instance_MenuClosed(object sender, EventArgs e)
-        {
-            SetSettings();
-        }
 
         public void GetSettings()
         {

@@ -63,6 +63,10 @@ namespace PomodoroTimerUWP.Views
                 }
                 _isMenuOpen = !_isMenuOpen; 
             }
+            else
+            {
+                MenuButtonService.Instance.GoBack();
+            }
         }
     }
 }

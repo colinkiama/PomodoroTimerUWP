@@ -44,6 +44,8 @@ namespace PomodoroTimerUWP.Views
             base.OnNavigatedTo(e);
             MainFrame.Navigate(typeof(MainView));
             MenuFrame.Navigate(typeof(MenuView));
+            NavService.Instance.LoadFrame(MenuFrame);
+
             MenuBackgroundArea.Visibility = Visibility.Collapsed;
             await ReviewHelper.TryRequestReviewAsync();
         }

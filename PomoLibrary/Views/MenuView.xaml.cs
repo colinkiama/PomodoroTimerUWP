@@ -1,5 +1,6 @@
 ﻿using PomoLibrary.Dialogs;
 using PomoLibrary.Model;
+using PomoLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +39,12 @@ namespace PomoLibrary.Views
         {
             this.InitializeComponent();
 
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            MenuButtonService.Instance.NavigatedToMenu();
         }
 
         private async void MenuListView_ItemClick(object sender, ItemClickEventArgs e)

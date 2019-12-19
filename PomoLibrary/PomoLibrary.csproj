@@ -145,6 +145,7 @@
     <Compile Include="Services\FileIOService.cs" />
     <Compile Include="Services\MenuButtonService.cs" />
     <Compile Include="Services\MiniViewService.cs" />
+    <Compile Include="Services\NavService.cs" />
     <Compile Include="Services\SessionService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Structs\NextSessionData.cs" />

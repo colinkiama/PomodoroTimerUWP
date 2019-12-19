@@ -9,19 +9,30 @@ namespace PomoLibrary.Services
 {
     public class SessionService
     {
+
+        private PomoSessionState _currentState;
         // Singleton Pattern with "Lazy"
         private static Lazy<SessionService> lazy =
             new Lazy<SessionService>(() => new SessionService());
 
         public static SessionService Instance => lazy.Value;
 
-        private SessionService() { }
+        private SessionService()
+        {
+            _currentState = PomoSessionState.InProgress;
+        }
 
         public event EventHandler<PomoSessionState> SessionStateChanged;
 
         public void UpdateSessionState(PomoSessionState newState)
         {
-            SessionStateChanged?.Invoke(this, newState);
+            _currentState = newState;
+            SessionStateChanged?.Invoke(this, _currentState);
+        }
+
+        internal PomoSessionState GetSessionState()
+        {
+            return _currentState;
         }
     }
 }

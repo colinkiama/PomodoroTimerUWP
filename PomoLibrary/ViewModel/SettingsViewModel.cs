@@ -136,15 +136,10 @@ namespace PomoLibrary.ViewModel
             MenuButtonService.Instance.NavigatedToMenuChild();
             MenuButtonService.Instance.BackButtonClicked += Instance_BackButtonClicked;
             SessionService.Instance.SessionStateChanged += Instance_SessionStateChanged;
-            IsSessionNotInProgress = true;
+            DetermineIfSessionIsInProgress(SessionService.Instance.GetSessionState());
         }
 
-        private void Instance_BackButtonClicked(object sender, EventArgs e)
-        {
-            NavService.Instance.GoBack();
-        }
-
-        private void Instance_SessionStateChanged(object sender, PomoSessionState sessionState)
+        private void DetermineIfSessionIsInProgress(PomoSessionState sessionState)
         {
             switch (sessionState)
             {
@@ -155,6 +150,16 @@ namespace PomoLibrary.ViewModel
                     IsSessionNotInProgress = false;
                     break;
             }
+        }
+
+        private void Instance_BackButtonClicked(object sender, EventArgs e)
+        {
+            NavService.Instance.GoBack();
+        }
+
+        private void Instance_SessionStateChanged(object sender, PomoSessionState sessionState)
+        {
+            DetermineIfSessionIsInProgress(sessionState);
         }
 
         private PomoSessionSettings GetSessionSettingsFromViewModel() => new PomoSessionSettings

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -21,7 +22,13 @@ namespace PomoLibrary.Services
         public void LoadFrame(Frame frame)
         {
             _frame = frame;
+            SystemNavigationManager.GetForCurrentView().BackRequested += NavService_BackRequested;
 
+        }
+
+        private void NavService_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            GoBack();
         }
 
         public void GoBack()

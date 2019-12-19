@@ -39,8 +39,14 @@ namespace PomoLibrary.Views
 
         }
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            _viewModel.SetSettings();
+        }
 
-        
-       
+
+
+
     }
 }

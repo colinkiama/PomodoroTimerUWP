@@ -141,7 +141,6 @@ namespace PomoLibrary.ViewModel
 
         private void Instance_BackButtonClicked(object sender, EventArgs e)
         {
-            SetSettings();
             NavService.Instance.GoBack();
         }
 

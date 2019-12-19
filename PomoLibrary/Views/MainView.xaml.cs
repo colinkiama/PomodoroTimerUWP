@@ -28,5 +28,7 @@ namespace PomoLibrary.Views
             this.InitializeComponent();
             _viewModel = new MainViewModel();
         }
+
+        
     }
 }

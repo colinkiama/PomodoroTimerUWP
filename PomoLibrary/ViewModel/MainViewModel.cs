@@ -107,6 +107,11 @@ namespace PomoLibrary.ViewModel
             CurrentSessionState = PomoSessionState.Stopped;
             PlayPauseCommand = new RelayCommand(PlayPauseCommandCalled);
             ResetCommand = new RelayCommand(ResetCommandCalled);
+
+            // Code beyond this point needs to be adjusted
+            // to support instances where data from an unfinished session
+            // should be used
+            CreateNewSession();
         }
 
         private void ResetCommandCalled()

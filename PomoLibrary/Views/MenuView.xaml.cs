@@ -1,9 +1,11 @@
-﻿using PomoLibrary.Model;
+﻿using PomoLibrary.Dialogs;
+using PomoLibrary.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -23,11 +25,12 @@ namespace PomoLibrary.Views
     /// </summary>
     public sealed partial class MenuView : Page
     {
-        private List<MenuSetting> _menuSettings { get; set; } = new List<MenuSetting>
+        private AboutDialog _aboutDialog = new AboutDialog();
+        private List<MenuItem> _menuSettings { get; set; } = new List<MenuItem>
         {
-            new MenuSetting{ Title= "Settings" ,IconGlyph = "\xE713" },
-            new MenuSetting{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
-            new MenuSetting{ Title= "About" ,IconGlyph = "\xE897" },
+            new MenuItem{ Title= "Settings" ,IconGlyph = "\xE713" },
+            new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
+            new MenuItem{ Title= "About" ,IconGlyph = "\xE897" },
         };
 
 
@@ -37,9 +40,38 @@ namespace PomoLibrary.Views
 
         }
 
-        private void SettingsListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void MenuListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            var clickedItem = e.ClickedItem;
+            if (_menuSettings.Contains(clickedItem))
+            {
+                var clickedMenuItem = (MenuItem)clickedItem; 
+                switch (_menuSettings.IndexOf(clickedMenuItem))
+                {
+                    case 0:
+                        Frame.Navigate(typeof(SettingsView));
+                        break;
+                    case 1:
+                        //Frame.Navigate(typeof(StatisticsView))
+                        break;
+                    case 2:
+                        await ShowAboutDialogAsync();
+                        break;
+                }
+            }
+        }
 
+        private async Task ShowAboutDialogAsync()
+        {
+            try
+            {
+                await _aboutDialog.ShowAsync();
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
     }
 }

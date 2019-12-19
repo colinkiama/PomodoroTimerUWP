@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PomoLibrary.Model
 {
-    internal class MenuSetting
+    internal class MenuItem
     {
         public string Title { get; set; }
         public string IconGlyph { get; set; }

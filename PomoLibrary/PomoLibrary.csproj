@@ -136,7 +136,7 @@
     <Compile Include="Helpers\AnimationHelper.cs" />
     <Compile Include="Helpers\AppStartupHelper.cs" />
     <Compile Include="Helpers\ReviewHelper.cs" />
-    <Compile Include="Model\MenuSetting.cs" />
+    <Compile Include="Model\MenuItem.cs" />
     <Compile Include="Model\SessionTimer.cs" />
     <Compile Include="Enums\PomoSessionState.cs" />
     <Compile Include="Enums\TimeUnit.cs" />

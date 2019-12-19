@@ -14,14 +14,16 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="{x:Bind _appName}" Name="TitleBarTextBlock"
-                   Margin="16,12,0,0"
-                   FontSize="12"/>
+                   Margin="16,12"
+                   FontSize="12"
+                   Canvas.ZIndex="100"/>
 
-
-        <Grid Name="RootGrid" Grid.Row="1" Margin="0,12,0,0">
-            <Frame x:Name="MainFrame"/>
-            <Frame x:Name="SettingsFrame" />
-            <Button Background="Transparent"
+        <Border Grid.Row="0" Grid.RowSpan="2"
+               Canvas.ZIndex="20" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                Name="MenuBackgroundArea">
+            <Frame x:Name="MenuFrame" Margin="0,52,0,0"/>
+        </Border>
+        <Button Background="Transparent"
                     Name="MenuButton"
                     BorderThickness="0"
                 HorizontalAlignment="Left"
@@ -31,8 +33,11 @@
                     FontFamily="Segoe MDL2 Assets"
                     Content="&#xE700;"
                     FontSize="16"
-                    Padding="16">
-            </Button>
-        </Grid>
+                    Padding="16"
+                Canvas.ZIndex="20">
+        </Button>
+        
+        <Frame x:Name="MainFrame" Grid.Row="1" Margin="0,4,0,0"/>
+        
     </Grid>
 </Page>

@@ -22,7 +22,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <StackPanel HorizontalAlignment="Right" Margin="0,20,20,0">
+            <StackPanel HorizontalAlignment="Right" Margin="0,0,20,0">
                 <TextBlock FontWeight="SemiBold" Text="Sessions:" HorizontalAlignment="Center"/>
                 <TextBlock Text="1/10" x:Name="SessionProgressTextBlock" HorizontalAlignment="Center"/>
             </StackPanel>

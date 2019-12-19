@@ -36,15 +36,15 @@ namespace PomodoroTimerUWP.Views
 
         private void AnimationHelper_FrameSlideOutAnimationCompleted(object sender, EventArgs e)
         {
-            SettingsFrame.Visibility = Visibility.Collapsed;
+            MenuBackgroundArea.Visibility = Visibility.Collapsed;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             MainFrame.Navigate(typeof(MainView));
-            SettingsFrame.Navigate(typeof(SettingsView));
-            SettingsFrame.Visibility = Visibility.Collapsed;
+            MenuFrame.Navigate(typeof(MenuView));
+            MenuBackgroundArea.Visibility = Visibility.Collapsed;
             await ReviewHelper.TryRequestReviewAsync();
         }
 
@@ -53,12 +53,12 @@ namespace PomodoroTimerUWP.Views
             if (_isMenuOpen)
             {
                 MenuButtonService.Instance.CloseMenu();
-                await AnimationHelper.FrameSlideOutAnimation(SettingsFrame);
+                await AnimationHelper.UIControlSlideOutAnimation(MenuBackgroundArea);
 
             }
             else
             {
-                await AnimationHelper.FrameSlideInAnimation(SettingsFrame);
+                await AnimationHelper.FrameSlideInAnimation(MenuBackgroundArea);
             }
             _isMenuOpen = !_isMenuOpen;
         }

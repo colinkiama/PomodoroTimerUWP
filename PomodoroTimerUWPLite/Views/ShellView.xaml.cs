@@ -52,7 +52,7 @@ namespace PomodoroTimerUWPLite.Views
             if (_isMenuOpen)
             {
                 MenuButtonService.Instance.CloseMenu();
-                await AnimationHelper.FrameSlideOutAnimation(MenuFrame);
+                await AnimationHelper.UIControlSlideOutAnimation(MenuFrame);
 
             }
             else

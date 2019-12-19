@@ -18,17 +18,17 @@ namespace PomoLibrary.Helpers
 
         public static event EventHandler FrameSlideOutAnimationCompleted;
         
-        public static async Task FrameSlideInAnimation(Frame frame)
+        public static async Task FrameSlideInAnimation(UIElement uiElement)
         {
             StopAndClearRunningFrameAnimations();
             float windowWidth = GetWindowWidth();
             float animDuration = CalculateAnimationDuration(windowWidth);
 
-            await frame.Offset(-windowWidth, 0, 0).StartAsync();
-            frame.Visibility = Visibility.Visible;
+            await uiElement.Offset(-windowWidth, 0, 0).StartAsync();
+            uiElement.Visibility = Visibility.Visible;
             
             
-            var slideInAnim = frame.Offset(0, duration:animDuration);
+            var slideInAnim = uiElement.Offset(0, duration:animDuration);
             slideInAnim.Completed += SlideInAnim_Completed;
             _runningFrameAnimations.Add(slideInAnim);
             await slideInAnim.StartAsync();
@@ -67,12 +67,12 @@ namespace PomoLibrary.Helpers
             _runningFrameAnimations.Clear();
         }
 
-        public static async Task FrameSlideOutAnimation(Frame frame)
+        public static async Task UIControlSlideOutAnimation(UIElement uiElement)
         {
             StopAndClearRunningFrameAnimations();
             float windowWidth = GetWindowWidth();
             float animDuration = CalculateAnimationDuration(windowWidth);
-            var slideOutAnim = frame.Offset(-windowWidth, duration:animDuration);
+            var slideOutAnim = uiElement.Offset(-windowWidth, duration:animDuration);
             slideOutAnim.Completed += SlideOutAnim_Completed;
             _runningFrameAnimations.Add(slideOutAnim);
             await slideOutAnim.StartAsync();

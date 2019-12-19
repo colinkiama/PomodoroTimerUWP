@@ -6,28 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Dysprose" Name="TitleBarTextBlock"
+        <TextBlock Text="{x:Bind _appName}" Name="TitleBarTextBlock"
                    Margin="16,12,0,0"
                    FontSize="12"/>
 
 
-        <Grid Name="RootGrid" Grid.Row="1">
-            <Frame x:Name="MainFrame" />
-            <Frame x:Name="SettingsFrame"/>
+        <Grid Name="RootGrid" Grid.Row="1" Margin="0,12,0,0">
+            <Frame x:Name="MainFrame"/>
+            <Frame x:Name="SettingsFrame" />
             <Button Background="Transparent"
                     Name="MenuButton"
+                    BorderThickness="0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Grid.Row="1"
-                    Click="MenuButton_Click">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
+                    Click="MenuButton_Click"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE700;"
+                    FontSize="16"
+                    Padding="16">
             </Button>
         </Grid>
     </Grid>

@@ -29,7 +29,7 @@
                     Click="MenuButton_Click"
                     FontFamily="Segoe MDL2 Assets"
                     Content="&#xE700;"
-                    FontSize="20"
+                    FontSize="16"
                     Padding="16">
             </Button>
         </Grid>

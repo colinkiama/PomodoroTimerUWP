@@ -16,7 +16,8 @@
         <TextBlock Text="Settings"
                    HorizontalAlignment="Center"
                    FontSize="24"
-                   FontWeight="SemiBold"/>
+                   FontWeight="SemiBold"
+                   Margin="0,8,0,0"/>
 
         <ScrollViewer Grid.Row="1" Margin="0,20,0,0" Name="SettingsScrollViewer"
                       Padding="20,0">

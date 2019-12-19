@@ -1,10 +1,12 @@
 ﻿using PomoLibrary.Helpers;
+using PomoLibrary.Services;
 using PomoLibrary.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,7 +27,7 @@ namespace PomodoroTimerUWP.Views
     public sealed partial class ShellView : Page
     {
         bool _isMenuOpen = false;
-
+        private string _appName = Package.Current.DisplayName;
         public ShellView()
         {
             this.InitializeComponent();

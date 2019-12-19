@@ -50,17 +50,19 @@ namespace PomodoroTimerUWP.Views
 
         private async void MenuButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_isMenuOpen)
+            if (MenuButtonService.Instance.CheckIfAtMenuRoot())
             {
-                MenuButtonService.Instance.CloseMenu();
-                await AnimationHelper.UIControlSlideOutAnimation(MenuBackgroundArea);
-
+                if (_isMenuOpen)
+                {
+                    MenuButtonService.Instance.CloseMenu();
+                    await AnimationHelper.UIControlSlideOutAnimation(MenuBackgroundArea);
+                   }
+                else
+                {
+                    await AnimationHelper.FrameSlideInAnimation(MenuBackgroundArea);
+                }
+                _isMenuOpen = !_isMenuOpen; 
             }
-            else
-            {
-                await AnimationHelper.FrameSlideInAnimation(MenuBackgroundArea);
-            }
-            _isMenuOpen = !_isMenuOpen;
         }
     }
 }

@@ -51,5 +51,11 @@ namespace PomoLibrary.Services
         {
             CurrentButtonGlyph = BackGlyphString;
         }
+
+
+        public bool CheckIfAtMenuRoot()
+        {
+            return _currentButtonGlyph == MenuGlyphString;
+        }
     }
 }

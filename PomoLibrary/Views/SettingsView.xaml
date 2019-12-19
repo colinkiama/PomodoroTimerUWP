@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="PomoLibrary.View.SettingsView"
+    x:Class="PomoLibrary.Views.SettingsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:PomoLibrary.View"
+    xmlns:local="using:PomoLibrary.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -12,7 +12,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Settings"
                    HorizontalAlignment="Center"
@@ -56,7 +55,7 @@
                           IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
 
                 <!--Data Settings-->
-                <TextBlock Text="Data Settings" FontWeight="SemiBold"
+                <!--<TextBlock Text="Data Settings" FontWeight="SemiBold"
                        FontSize="20"
                        Margin="0,40,0,0"/>
                 <Button x:Name="ClearDataButton"
@@ -70,16 +69,9 @@
                            Margin="0,12,0,0"/>
                 <TextBlock x:Name="LastSyncedTimeTextBlock"
                            Text="23/01/2019 - 20:19"
-                           Margin="0,4,0,0"/>
+                           Margin="0,4,0,0"/>-->
             </StackPanel>
         </ScrollViewer>
-        <Button Grid.Row="2" Content="About"
-                HorizontalAlignment="Right"
-                Name="AboutButton"
-                Click="AboutButton_Click"
-                Margin="0,0,20,20">
-
-        </Button>
 
 
 

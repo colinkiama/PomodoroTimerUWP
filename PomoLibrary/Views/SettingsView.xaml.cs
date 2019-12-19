@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace PomoLibrary.View
+namespace PomoLibrary.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -26,7 +26,7 @@ namespace PomoLibrary.View
     public sealed partial class SettingsView : Page
     {
         SettingsViewModel _viewModel = new SettingsViewModel();
-        AboutDialog _aboutDialog = new AboutDialog();
+
         public SettingsView()
         {
             this.InitializeComponent();
@@ -37,19 +37,6 @@ namespace PomoLibrary.View
             base.OnNavigatedTo(e);
             _viewModel.GetSettings();
         }
-
-        private async void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                await _aboutDialog.ShowAsync();
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
        
     }
 }

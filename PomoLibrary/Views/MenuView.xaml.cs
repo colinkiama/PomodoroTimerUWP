@@ -1,4 +1,4 @@
-﻿using PomoLibrary.Views;
+﻿using PomoLibrary.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,23 +16,30 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace PomodoroTimerUWPLite.Views
+namespace PomoLibrary.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ShellView : Page
+    public sealed partial class MenuView : Page
     {
-        public ShellView()
+        private List<MenuSetting> _menuSettings { get; set; } = new List<MenuSetting>
+        {
+            new MenuSetting{ Title= "Settings" ,IconGlyph = "\xE713" },
+            new MenuSetting{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
+            new MenuSetting{ Title= "About" ,IconGlyph = "\xE897" },
+        };
+
+
+        public MenuView()
         {
             this.InitializeComponent();
+
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void SettingsListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            //MainFrame.Navigate(typeof(MainView));
-            MainFrame.Navigate(typeof(MenuView));
+
         }
     }
 }

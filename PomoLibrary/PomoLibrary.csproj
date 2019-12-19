@@ -136,6 +136,7 @@
     <Compile Include="Helpers\AnimationHelper.cs" />
     <Compile Include="Helpers\AppStartupHelper.cs" />
     <Compile Include="Helpers\ReviewHelper.cs" />
+    <Compile Include="Model\MenuSetting.cs" />
     <Compile Include="Model\SessionTimer.cs" />
     <Compile Include="Enums\PomoSessionState.cs" />
     <Compile Include="Enums\TimeUnit.cs" />
@@ -154,6 +155,9 @@
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MenuView.xaml.cs">
+      <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -180,6 +184,10 @@
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>

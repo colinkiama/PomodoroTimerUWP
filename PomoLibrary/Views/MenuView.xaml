@@ -1,0 +1,41 @@
+﻿<Page
+    x:Class="PomoLibrary.Views.MenuView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PomoLibrary.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:PomoLibrary.Model"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Menu"
+                   HorizontalAlignment="Center"
+                   FontSize="24"
+                   FontWeight="SemiBold"/>
+
+        <ScrollViewer Grid.Row="1" Margin="0,20,0,0" Name="SettingsScrollViewer"
+                      >
+            <ListView Name="SettingsListView" ItemsSource="{x:Bind _menuSettings}"
+                      ItemClick="SettingsListView_ItemClick"
+                      SelectionMode="None"
+                      IsItemClickEnabled="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MenuSetting">
+                    <StackPanel Orientation="Horizontal" Padding="20,32">
+                        <FontIcon Glyph="{x:Bind IconGlyph}" FontSize="32" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind Title}" Margin="12,0,0,0" FontSize="24" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+
+
+
+    </Grid>
+</Page>

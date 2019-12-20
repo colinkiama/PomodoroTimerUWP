@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,7 +27,7 @@ namespace PomodoroTimerUWPLite.Views
     public sealed partial class ShellView : Page
     {
         bool _isMenuOpen = false;
-
+        private string _appName = Package.Current.DisplayName;
         public ShellView()
         {
             this.InitializeComponent();
@@ -35,7 +36,7 @@ namespace PomodoroTimerUWPLite.Views
 
         private void AnimationHelper_FrameSlideOutAnimationCompleted(object sender, EventArgs e)
         {
-            MenuFrame.Visibility = Visibility.Collapsed;
+            MenuBackgroundArea.Visibility = Visibility.Collapsed;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,23 +44,31 @@ namespace PomodoroTimerUWPLite.Views
             base.OnNavigatedTo(e);
             MainFrame.Navigate(typeof(MainView));
             MenuFrame.Navigate(typeof(MenuView));
-            MenuFrame.Visibility = Visibility.Collapsed;
+            NavService.Instance.LoadFrame(MenuFrame);
+
+            MenuBackgroundArea.Visibility = Visibility.Collapsed;
             await ReviewHelper.TryRequestReviewAsync();
         }
 
         private async void MenuButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_isMenuOpen)
+            if (MenuButtonService.Instance.CheckIfAtMenuRoot())
             {
-                MenuButtonService.Instance.CloseMenu();
-                await AnimationHelper.UIControlSlideOutAnimation(MenuFrame);
-
+                if (_isMenuOpen)
+                {
+                    MenuButtonService.Instance.CloseMenu();
+                    await AnimationHelper.UIControlSlideOutAnimation(MenuBackgroundArea);
+                }
+                else
+                {
+                    await AnimationHelper.FrameSlideInAnimation(MenuBackgroundArea);
+                }
+                _isMenuOpen = !_isMenuOpen;
             }
             else
             {
-                await AnimationHelper.FrameSlideInAnimation(MenuFrame);
+                MenuButtonService.Instance.GoBack();
             }
-            _isMenuOpen = !_isMenuOpen;
         }
     }
 }

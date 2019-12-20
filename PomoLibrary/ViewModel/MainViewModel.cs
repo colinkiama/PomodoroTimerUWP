@@ -107,10 +107,17 @@ namespace PomoLibrary.ViewModel
             CurrentSessionState = PomoSessionState.Stopped;
             PlayPauseCommand = new RelayCommand(PlayPauseCommandCalled);
             ResetCommand = new RelayCommand(ResetCommandCalled);
-
+            SettingsService.Instance.SessionSettingsUpdated += Instance_SessionSettingsUpdated;
             // Code beyond this point needs to be adjusted
             // to support instances where data from an unfinished session
             // should be used
+            CreateNewSession();
+        }
+
+        private void Instance_SessionSettingsUpdated(object sender, PomoSessionSettings e)
+        {
+            // Settings have changed so creating a new session
+            // Makes it easier to reflect the changes
             CreateNewSession();
         }
 

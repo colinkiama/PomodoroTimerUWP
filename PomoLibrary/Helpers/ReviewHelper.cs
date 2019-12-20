@@ -9,18 +9,21 @@ namespace PomoLibrary.Helpers
 {
     public static class ReviewHelper
     {
-        const string launchCountSettingsValue = "launchCount";
-        const string noMorePromptsSettingsValue = "noMorePrompts";
-        
         public const string emailValue = "colinkiama@gmail.com";
         public const string StoreID = "9PJSR2QK1V1V";
         public static readonly string ReviewString = $"ms-windows-store://review/?ProductId={StoreID}";
+        public static readonly string FeedbackString;
+
+        const string launchCountSettingsValue = "launchCount";
+        const string noMorePromptsSettingsValue = "noMorePrompts";
+        
         static string appDisplayName = Package.Current.DisplayName;
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
         static ReviewHelper()
         {
             TryUpdateLaunchCount();
+            FeedbackString = $"mailto:{emailValue}?subject={appDisplayName}%20Feedback&body=<Write%20your%20feedback%20here>";
         }
       
 

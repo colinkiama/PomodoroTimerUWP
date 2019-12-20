@@ -7,12 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:PomoLibrary.Helpers"
     mc:Ignorable="d"
-    Title="TITLE"
-   
-    >
+    Title="TITLE">
     <ContentDialog.Resources>
-        <x:String x:Key="ReviewString">ms-windows-store://review/?ProductId=9NNZQ38B48ZJ</x:String>
-        <x:String x:Key="FeedbackString">mailto:colinkiama@gmail.com?subject=Pomodoro%20Timer%20%UWP%20Feedback&amp;body=[Write Feedback Here]</x:String>
         <x:String x:Key="WebsiteString">https://www.colinkiama.com</x:String>
         <x:String x:Key="GitHubString">https://www.github.com/colinkiama</x:String>
     </ContentDialog.Resources>
@@ -27,7 +23,7 @@
                 <TextBlock x:Name="VersionTextBlock"/>
                 <HyperlinkButton Name="ReviewLink" NavigateUri="{x:Bind helpers:ReviewHelper.ReviewString}" Content="Rate/Review this app"
                              Margin="0,8,0,0"/>
-                <HyperlinkButton Name="FeedbackLink" NavigateUri="{StaticResource FeedbackString}" Content="Feedback"/>
+                <HyperlinkButton Name="FeedbackLink" NavigateUri="{x:Bind helpers:ReviewHelper.FeedbackString}" Content="Feedback"/>
                 <HyperlinkButton Name="WebsiteLink" NavigateUri="{StaticResource WebsiteString}" Content="Website"/>
                 <HyperlinkButton Name="GitHubLink" NavigateUri="{StaticResource GitHubString}" Content="GitHub"/>
             </StackPanel>

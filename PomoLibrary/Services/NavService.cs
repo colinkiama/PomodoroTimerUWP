@@ -29,6 +29,7 @@ namespace PomoLibrary.Services
         private void NavService_BackRequested(object sender, BackRequestedEventArgs e)
         {
             GoBack();
+            e.Handled = true;
         }
 
         public void GoBack()

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace PomoLibrary.Services
 {
@@ -21,7 +22,17 @@ namespace PomoLibrary.Services
 
         public static SettingsService Instance => lazy.Value;
 
-        private SettingsService() { }
+        private SettingsService()
+        {
+            Application.Current.EnteredBackground += Current_EnteredBackground;
+        }
+
+        private async void Current_EnteredBackground(object sender, Windows.ApplicationModel.EnteredBackgroundEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            await SaveSettingsAsync();
+            deferral.Complete();
+        }
 
         public void UpdateSessionSettings(PomoSessionSettings sessionSettings)
         {
@@ -32,7 +43,7 @@ namespace PomoLibrary.Services
             }
         }
 
-       
+
         public async Task LoadSettingsAsync()
         {
             var sessionSettingsLoad = await FileIOService.Instance.LoadSessionSettings();

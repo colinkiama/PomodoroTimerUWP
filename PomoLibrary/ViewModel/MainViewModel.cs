@@ -116,8 +116,7 @@ namespace PomoLibrary.ViewModel
 
         private void Instance_SessionSettingsUpdated(object sender, PomoSessionSettings e)
         {
-            // Settings have changed so creating a new session
-            // Makes it easier to reflect the changes
+            // Creating a new session is easier than updating the session with changes
             CreateNewSession();
         }
 

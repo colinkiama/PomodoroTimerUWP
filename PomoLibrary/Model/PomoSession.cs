@@ -12,13 +12,27 @@ namespace PomoLibrary.Model
     public class PomoSession
     {
         private NextSessionData _nextSessionCache;
+        private SessionTimer timer;
+
         public int SessionsCompleted { get; set; }
         public PomoSessionType CurrentSessionType { get; set; }
         public PomoSessionState CurrentSessionState { get; set; }
         public PomoSessionSettings SessionSettings { get; set; }
-        public SessionTimer Timer { get; set; }
+        public SessionTimer Timer
+        {
+            get => timer;
+            set
+            {
+                timer = value;
+                ListenToTimerEvents(timer);
+            }
+        }
 
-
+        private void ListenToTimerEvents(SessionTimer timer)
+        {
+            timer.TimerTicked += Timer_TimerTicked;
+            timer.TimerEnded += Timer_TimerEnded;
+        }
 
         public event EventHandler<TimeSpan> TimerTicked;
         public event EventHandler SessionCompleted;
@@ -36,6 +50,8 @@ namespace PomoLibrary.Model
             Timer.TimerTicked += Timer_TimerTicked;
             Timer.TimerEnded += Timer_TimerEnded;
         }
+
+
 
         private void Timer_TimerEnded(object sender, EventArgs e)
         {

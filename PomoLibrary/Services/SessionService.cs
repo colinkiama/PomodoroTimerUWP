@@ -1,4 +1,5 @@
 ﻿using PomoLibrary.Enums;
+using PomoLibrary.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,5 +35,7 @@ namespace PomoLibrary.Services
         {
             return _currentState;
         }
+
+        
     }
 }

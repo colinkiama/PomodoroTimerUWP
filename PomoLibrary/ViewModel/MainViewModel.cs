@@ -123,7 +123,37 @@ namespace PomoLibrary.ViewModel
             // Code beyond this point needs to be adjusted
             // to support instances where data from an unfinished session
             // should be used
-            CreateNewSession();
+            bool sessionLoadedFromFile = TryGetLoadedSession();
+            if (!sessionLoadedFromFile)
+            {
+                CreateNewSession();
+            }
+            Application.Current.EnteredBackground += Current_EnteredBackground;
+        }
+
+        private bool TryGetLoadedSession()
+        {
+            
+            PomoSession loadedSession = FileIOService.Instance.GetLoadedCurrentSessionData();
+            bool wasSessionLoaded = loadedSession != null;
+            if (wasSessionLoaded)
+            {
+                CurrentSession = loadedSession;
+                FillInDetailsFromSession();
+            }
+            return wasSessionLoaded;
+        }
+
+
+        private async void Current_EnteredBackground(object sender, Windows.ApplicationModel.EnteredBackgroundEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            bool hasSessionNotStarted = CurrentSessionState == PomoSessionState.Stopped && CurrentSession.SessionsCompleted == 0;
+            if (!hasSessionNotStarted)
+            {
+                await FileIOService.Instance.SaveCurrentSessionDataAsync(CurrentSession);
+            }
+            deferral.Complete();
         }
 
         private void Instance_SessionSettingsUpdated(object sender, PomoSessionSettings e)
@@ -161,10 +191,30 @@ namespace PomoLibrary.ViewModel
             CurrentSession.StateChanged += CurrentSession_StateChanged;
             CurrentSession.TypeChanged += CurrentSession_TypeChanged;
             UpdateTotalSessionProgress(CurrentSession.SessionsCompleted, CurrentSession.SessionSettings.NumberOfSessions);
+            CurrentSessionState = CurrentSession.CurrentSessionState;
             CurrentSessionType = CurrentSession.CurrentSessionType;
             // TODO: Adjust this to support the different Session Lengths for each session state
-            _sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
-            CurrentSessionTime = _sessionLength;
+            _sessionLength = PickLengthFromType(_currentSessionType);
+            UpdateSessionTime(CurrentSession.Timer.GetTimeElapsed());
+            
+        }
+
+        private TimeSpan PickLengthFromType(PomoSessionType currentSessionType)
+        {
+            var timeSpanToReturn = TimeSpan.FromSeconds(0);
+            switch (currentSessionType)
+            {
+                case PomoSessionType.Work:
+                    timeSpanToReturn = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
+                    break;
+                case PomoSessionType.Break:
+                    timeSpanToReturn = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.BreakSessionLength.TimeInMilliseconds);
+                    break;
+                case PomoSessionType.LongBreak:
+                    timeSpanToReturn = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.LongBreakSessionLength.TimeInMilliseconds);
+                    break;
+            }
+            return timeSpanToReturn;
         }
 
         private void UpdateTotalSessionProgress(int sessionsCompleted, int numberOfSessions)
@@ -175,7 +225,7 @@ namespace PomoLibrary.ViewModel
         private void CurrentSession_TypeChanged(object sender, PomoSessionType newSessionType)
         {
             CurrentSessionType = newSessionType;
-            
+
             // If session is not of a work type, a work session was previously completed
             // So get the session progress changes
             if (newSessionType != PomoSessionType.Work)
@@ -202,8 +252,9 @@ namespace PomoLibrary.ViewModel
         }
 
         // This means that the user wants to stop the whole session
-        private void SessionCompletedDialog_CloseButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
+        private async void SessionCompletedDialog_CloseButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
         {
+            await FileIOService.Instance.RemoveCurrentSessionData();
             CreateNewSession();
         }
 
@@ -215,6 +266,7 @@ namespace PomoLibrary.ViewModel
 
         private void ContinueSession()
         {
+
             NextSessionData nextSessionData = CurrentSession.GetNextSessionData();
             if (nextSessionData.NextSessionState == PomoSessionState.Stopped)
             {
@@ -227,6 +279,7 @@ namespace PomoLibrary.ViewModel
                 _sessionLength = nextSessionData.NextSessionLength;
                 Resume();
             }
+
         }
 
         private void CurrentSession_StateChanged(object sender, PomoSessionState newState)
@@ -267,6 +320,11 @@ namespace PomoLibrary.ViewModel
         }
 
         private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)
+        {
+            UpdateSessionTime(timeElapsed);
+        }
+
+        private void UpdateSessionTime(TimeSpan timeElapsed)
         {
             CurrentSessionTime = _sessionLength - timeElapsed;
         }

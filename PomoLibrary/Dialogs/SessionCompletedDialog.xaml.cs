@@ -21,7 +21,6 @@ namespace PomoLibrary.Dialogs
     public sealed partial class SessionCompletedDialog : ContentDialog
     {
        
-
         public SessionCompletedDialog(PomoSessionType sessionType)
         {
             this.InitializeComponent();

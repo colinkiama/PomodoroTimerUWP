@@ -1,4 +1,5 @@
-﻿using PomoLibrary.Structs;
+﻿using PomoLibrary.Model;
+using PomoLibrary.Structs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,13 +19,16 @@ namespace PomoLibrary.Services
             new Lazy<FileIOService>(() => new FileIOService());
 
         const string SessionSettingsFileName = "SessionSettings.json";
-        const string CurrentSessionSettingsFileName = "CurrentSession.json";
+        const string CurrentSessionDataFileName = "CurrentSession.json";
+
+        PomoSession _loadedSession = null;
 
         static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         
         public static FileIOService Instance => lazy.Value;
 
         private FileIOService() { }
+
 
         public async Task<PomoSessionSettings?> LoadSessionSettings()
         {
@@ -69,11 +73,55 @@ namespace PomoLibrary.Services
             }
         }
 
+        public async Task SaveCurrentSessionDataAsync(PomoSession sessionToSave)
+        {
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(PomoSession));
+            using (Stream stream = await GetWriteStreamAsync(CurrentSessionDataFileName))
+            {
+                serializer.WriteObject(stream, sessionToSave);
+            }
+        }
+
+        public async Task LoadCurrentSessionDataAsync()
+        {
+            PomoSession currentSessionData = null;
+            try
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(PomoSession));
+                using (var stream = await LoadFileAsync(CurrentSessionDataFileName))
+                {
+                    currentSessionData = (PomoSession)serializer.ReadObject(stream);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            _loadedSession = currentSessionData;
+        }
+
+        public async Task RemoveCurrentSessionData()
+        {
+            try
+            {
+                var file = await localFolder.GetFileAsync(CurrentSessionDataFileName);
+                await file.DeleteAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         private async Task<Stream> GetWriteStreamAsync(string fileName)
         {
             var file = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
             return await file.OpenStreamForWriteAsync();
         }
+
+        public PomoSession GetLoadedCurrentSessionData() => _loadedSession;
     }
 }

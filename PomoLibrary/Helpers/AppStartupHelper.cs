@@ -19,6 +19,7 @@ namespace PomoLibrary.Helpers
             ExtendViewIntoTitleBar();
             _appView.SetPreferredMinSize(new Size(192,192));
             await SettingsService.Instance.LoadSettingsAsync();
+            await FileIOService.Instance.LoadCurrentSessionDataAsync();
         }
 
         private static void ExtendViewIntoTitleBar()

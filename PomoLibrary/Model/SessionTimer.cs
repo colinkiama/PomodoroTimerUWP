@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -13,47 +14,57 @@ namespace PomoLibrary.Model
     {
         public event EventHandler<TimeSpan> TimerTicked;
         public event EventHandler TimerEnded;
+
         DispatcherTimer timer;
-        int timesTicked = 0;
-        int timesToTick = 0;
 
+        public int TimesTicked { get; set; } = 0;
+        public int TimesToTick { get; set; } = 0;
 
+        public SessionTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Tick += Timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
+        }
+        
         public SessionTimer(PomoSessionLength sessionTime)
         {
             timer = new DispatcherTimer();
-            timesTicked = 0;
+            TimesTicked = 0;
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
 
-            timesToTick = (int)Math.Ceiling(sessionTime.TimeInMilliseconds / timer.Interval.TotalMilliseconds);
+            TimesToTick = (int)Math.Ceiling(sessionTime.TimeInMilliseconds / timer.Interval.TotalMilliseconds);
         }
 
         public void SetTimer(TimeSpan timeToRunFor)
         {
-            timesTicked = 0;
-            timesToTick = (int)Math.Ceiling(timeToRunFor.TotalMilliseconds / timer.Interval.TotalMilliseconds);
+            TimesTicked = 0;
+            TimesToTick = (int)Math.Ceiling(timeToRunFor.TotalMilliseconds / timer.Interval.TotalMilliseconds);
         }
 
         private void Timer_Tick(object sender, object e)
         {
-            timesTicked++;
-            Debug.WriteLine($"Times ticked: {timesTicked}/{timesToTick}");
-            if (timesTicked > timesToTick)
+            TimesTicked++;
+            Debug.WriteLine($"Times ticked: {TimesTicked}/{TimesToTick}");
+            if (TimesTicked > TimesToTick)
             {
                 timer.Stop();
                 TimerEnded?.Invoke(sender, EventArgs.Empty);
             }
             else
             {
-                TimeSpan timeElapsed = TimeSpan.FromSeconds(timer.Interval.TotalSeconds * timesTicked);
+                TimeSpan timeElapsed = GetTimeElapsed();    
                 TimerTicked?.Invoke(this, timeElapsed);
             }
 
         }
 
+        public TimeSpan GetTimeElapsed() => TimeSpan.FromSeconds(timer.Interval.TotalSeconds * TimesTicked);
+
         public bool StartTimer()
         {
-            bool willStart = timesToTick > timesTicked;
+            bool willStart = TimesToTick > TimesTicked;
             if (willStart)
             {
                 timer.Start();

@@ -40,6 +40,7 @@ namespace PomoLibrary.Dialogs
             }
 
             this.Title = sessionTypeTitle;
+            this.Content = $"{sessionTypeTitle} has ended. Please select what to do next.";
             this.PrimaryButtonText = "Continue";
             this.CloseButtonText = "Stop";
         }

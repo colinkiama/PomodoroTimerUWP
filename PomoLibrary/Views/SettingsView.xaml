@@ -44,7 +44,7 @@
                           IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
 
                 <!--LongBreak-->
-                <TextBox Header="Session Length:" Margin="0,20,0,0"
+                <TextBox Header="Long Break Session Length:" Margin="0,20,0,0"
                          Text="{x:Bind _viewModel.LongBreakSessionLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
                 <ComboBox x:Name="LongBreakSessionTimeUnitComboBox"

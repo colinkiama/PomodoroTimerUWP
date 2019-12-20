@@ -171,8 +171,10 @@ namespace PomoLibrary.Services
             _toastNotifier.AddToSchedule(scheduledToast);
         }
 
-        public void ClearScheduledNotifications()
+
+        public void ClearAllNotifications()
         {
+            ToastNotificationManager.History.Clear();
             var scheduledToasts = _toastNotifier.GetScheduledToastNotifications();
             List<ScheduledToastNotification> scheduledToastsToRemove = new List<ScheduledToastNotification>();
             foreach (var toast in scheduledToasts)

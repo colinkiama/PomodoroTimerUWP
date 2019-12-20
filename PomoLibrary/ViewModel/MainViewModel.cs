@@ -277,6 +277,8 @@ namespace PomoLibrary.ViewModel
             {
                 // Apply next session data and start the next stage
                 _sessionLength = nextSessionData.NextSessionLength;
+                CurrentSessionTime = _sessionLength;
+                CurrentSessionType = nextSessionData.NextSessionType;
                 Resume();
             }
 
@@ -316,13 +318,13 @@ namespace PomoLibrary.ViewModel
         internal void Pause()
         {
             CurrentSession.PauseSession();
-            NotificationsService.Instance.ClearScheduledNotifications();
+            NotificationsService.Instance.ClearAllNotifications();
         }
 
         internal void Stop()
         {
             CurrentSession.StopSession();
-            NotificationsService.Instance.ClearScheduledNotifications();
+            NotificationsService.Instance.ClearAllNotifications();
         }
 
         private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)

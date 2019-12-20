@@ -161,6 +161,7 @@ namespace PomoLibrary.ViewModel
             CurrentSession.StateChanged += CurrentSession_StateChanged;
             CurrentSession.TypeChanged += CurrentSession_TypeChanged;
             UpdateTotalSessionProgress(CurrentSession.SessionsCompleted, CurrentSession.SessionSettings.NumberOfSessions);
+            CurrentSessionType = CurrentSession.CurrentSessionType;
             // TODO: Adjust this to support the different Session Lengths for each session state
             _sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
             CurrentSessionTime = _sessionLength;

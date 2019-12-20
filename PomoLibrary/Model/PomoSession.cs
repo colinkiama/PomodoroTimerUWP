@@ -12,7 +12,7 @@ namespace PomoLibrary.Model
     public class PomoSession
     {
         private NextSessionData _nextSessionCache;
-        private SessionTimer timer;
+        private SessionTimer _timer;
 
         public int SessionsCompleted { get; set; }
         public PomoSessionType CurrentSessionType { get; set; }
@@ -20,11 +20,12 @@ namespace PomoLibrary.Model
         public PomoSessionSettings SessionSettings { get; set; }
         public SessionTimer Timer
         {
-            get => timer;
+            get => _timer;
             set
             {
-                timer = value;
-                ListenToTimerEvents(timer);
+                // Workaround to listen to timer events from a loaded SessionTimer
+                _timer = value;
+                ListenToTimerEvents(_timer);
             }
         }
 
@@ -46,9 +47,8 @@ namespace PomoLibrary.Model
             CurrentSessionState = PomoSessionState.Stopped;
             CurrentSessionType = PomoSessionType.Work;
             SessionsCompleted = 0;
-            Timer = new SessionTimer(SessionSettings.WorkSessionLength);
-            Timer.TimerTicked += Timer_TimerTicked;
-            Timer.TimerEnded += Timer_TimerEnded;
+            _timer = new SessionTimer(SessionSettings.WorkSessionLength);
+            ListenToTimerEvents(_timer);
         }
 
 

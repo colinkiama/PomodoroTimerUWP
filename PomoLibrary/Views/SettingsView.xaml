@@ -54,6 +54,12 @@
                           SelectedItem="{x:Bind _viewModel.LongBreakSessionTimeUnit, Mode=TwoWay}"
                           IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
 
+
+                <TextBox Header="Number Of Sessions:" Margin="0,20,0,0"
+                         Text="{x:Bind _viewModel.NumberOfSessions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{x:Bind _viewModel.IsSessionNotInProgress, Mode=OneWay}"/>
+                
+                
                 <!--Data Settings-->
                 <!--<TextBlock Text="Data Settings" FontWeight="SemiBold"
                        FontSize="20"

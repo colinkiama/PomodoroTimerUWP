@@ -105,6 +105,24 @@ namespace PomoLibrary.ViewModel
             }
         }
 
+        private int _numberOfSessions;
+
+        public int NumberOfSessions
+        {
+            get { return _numberOfSessions; }
+            set
+            {
+                if (_numberOfSessions != value)
+                {
+                    _numberOfSessions = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
+
+
         // Beware of double negative!
         // This was done for easier xaml binding
         private bool _isSessionNotInProgress;
@@ -167,6 +185,7 @@ namespace PomoLibrary.ViewModel
             WorkSessionLength = new PomoSessionLength { Length = _workSessionLength, UnitOfLength = _workSessionTimeUnit },
             BreakSessionLength = new PomoSessionLength { Length = _breakSessionLength, UnitOfLength = _breakSessionTimeUnit },
             LongBreakSessionLength = new PomoSessionLength { Length = _longBreakSessionLength, UnitOfLength = _longBreakSessionTimeUnit },
+            NumberOfSessions = this._numberOfSessions,
         };
 
         public void GetSettings()
@@ -195,6 +214,8 @@ namespace PomoLibrary.ViewModel
 
             LongBreakSessionLength = sessionSettings.LongBreakSessionLength.Length;
             LongBreakSessionTimeUnit = sessionSettings.LongBreakSessionLength.UnitOfLength;
+
+            NumberOfSessions = sessionSettings.NumberOfSessions;
         }
     }
 }

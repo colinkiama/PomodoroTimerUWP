@@ -12,7 +12,7 @@ namespace PomoLibrary.Model
     public class PomoSession
     {
         private NextSessionData _nextSessionCache;
-        public int SessionNumber { get; set; }
+        public int SessionsCompleted { get; set; }
         public PomoSessionType CurrentSessionType { get; set; }
         public PomoSessionState CurrentSessionState { get; set; }
         public PomoSessionSettings SessionSettings { get; set; }
@@ -31,7 +31,7 @@ namespace PomoLibrary.Model
             SessionSettings = loadedSessionSettings;
             CurrentSessionState = PomoSessionState.Stopped;
             CurrentSessionType = PomoSessionType.Work;
-            SessionNumber = 1;
+            SessionsCompleted = 0;
             Timer = new SessionTimer(SessionSettings.WorkSessionLength);
             Timer.TimerTicked += Timer_TimerTicked;
             Timer.TimerEnded += Timer_TimerEnded;
@@ -81,7 +81,7 @@ namespace PomoLibrary.Model
         private PomoSessionState DetermineNextSessionState()
         {
             PomoSessionState stateToReturn = PomoSessionState.InProgress;
-            if (SessionNumber + 1 > SessionSettings.NumberOfSessions)
+            if (SessionsCompleted == SessionSettings.NumberOfSessions)
             {
                 stateToReturn = PomoSessionState.Stopped;
             }
@@ -95,7 +95,7 @@ namespace PomoLibrary.Model
             switch (CurrentSessionType)
             {
                 case PomoSessionType.Work:
-                    if (SessionNumber + 1 == SessionSettings.NumberOfSessions)
+                    if (SessionsCompleted + 1 == SessionSettings.NumberOfSessions)
                     {
                         sessionTypeToReturn = PomoSessionType.LongBreak;
                     }
@@ -121,13 +121,17 @@ namespace PomoLibrary.Model
 
             if (_nextSessionCache.NextSessionLength != TimeSpan.FromMilliseconds(0))
             {
+                // Only increments the session number if the last session was a work session
+                if (CurrentSessionType == PomoSessionType.Work)
+                {
+                    SessionsCompleted++;
+                }
                 CurrentSessionState = _nextSessionCache.NextSessionState;
                 StateChanged?.Invoke(this, CurrentSessionState);
                 CurrentSessionType = _nextSessionCache.NextSessionType;
                 TypeChanged?.Invoke(this, CurrentSessionType);
                 Timer.SetTimer(_nextSessionCache.NextSessionLength);
                 hasStarted = Timer.StartTimer();
-                SessionNumber++;
                 ClearNextSessionCache();
             }
             else

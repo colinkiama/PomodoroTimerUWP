@@ -26,9 +26,9 @@
                       IsItemClickEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:MenuItem">
-                    <StackPanel Orientation="Horizontal" Padding="20,32">
-                        <FontIcon Glyph="{x:Bind IconGlyph}" FontSize="32" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Bind Title}" Margin="12,0,0,0" FontSize="24" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Padding="2,16">
+                        <FontIcon Glyph="{x:Bind IconGlyph}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind Title}" Margin="20,0,0,0" FontSize="20" VerticalAlignment="Center"/>
                     </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -5,8 +5,10 @@
     xmlns:local="using:PomoLibrary.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:PomoLibrary.Helpers"
     mc:Ignorable="d"
     Title="TITLE"
+   
     >
     <ContentDialog.Resources>
         <x:String x:Key="ReviewString">ms-windows-store://review/?ProductId=9NNZQ38B48ZJ</x:String>
@@ -23,7 +25,7 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock x:Name="VersionTextBlock"/>
-                <HyperlinkButton Name="ReviewLink" NavigateUri="{StaticResource ReviewString}" Content="Rate/Review this app"
+                <HyperlinkButton Name="ReviewLink" NavigateUri="{x:Bind helpers:ReviewHelper.ReviewString}" Content="Rate/Review this app"
                              Margin="0,8,0,0"/>
                 <HyperlinkButton Name="FeedbackLink" NavigateUri="{StaticResource FeedbackString}" Content="Feedback"/>
                 <HyperlinkButton Name="WebsiteLink" NavigateUri="{StaticResource WebsiteString}" Content="Website"/>

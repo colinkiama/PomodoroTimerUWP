@@ -11,8 +11,10 @@ namespace PomoLibrary.Helpers
     {
         const string launchCountSettingsValue = "launchCount";
         const string noMorePromptsSettingsValue = "noMorePrompts";
+        
         public const string emailValue = "colinkiama@gmail.com";
-
+        public const string StoreID = "9PJSR2QK1V1V";
+        public static readonly string ReviewString = $"ms-windows-store://review/?ProductId={StoreID}";
         static string appDisplayName = Package.Current.DisplayName;
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
@@ -64,7 +66,7 @@ namespace PomoLibrary.Helpers
             if (args.Result == ContentDialogResult.Primary)
             {
                 RemovePromptsForever();
-                await Launcher.LaunchUriAsync(new Uri("ms-windows-store://review/?ProductId=9NNZQ38B48ZJ"));
+                await Launcher.LaunchUriAsync(new Uri(ReviewString));
             }
             else
             {

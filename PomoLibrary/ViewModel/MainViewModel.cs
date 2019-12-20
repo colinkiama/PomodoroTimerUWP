@@ -160,13 +160,13 @@ namespace PomoLibrary.ViewModel
             CurrentSession.SessionCompleted += CurrentSession_SessionCompleted;
             CurrentSession.StateChanged += CurrentSession_StateChanged;
             CurrentSession.TypeChanged += CurrentSession_TypeChanged;
-            FillInSessionInitialSessionProgress(CurrentSession.SessionsCompleted, CurrentSession.SessionSettings.NumberOfSessions);
+            UpdateTotalSessionProgress(CurrentSession.SessionsCompleted, CurrentSession.SessionSettings.NumberOfSessions);
             // TODO: Adjust this to support the different Session Lengths for each session state
             _sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
             CurrentSessionTime = _sessionLength;
         }
 
-        private void FillInSessionInitialSessionProgress(int sessionsCompleted, int numberOfSessions)
+        private void UpdateTotalSessionProgress(int sessionsCompleted, int numberOfSessions)
         {
             TotalSessionProgress = new int[] { sessionsCompleted, numberOfSessions };
         }
@@ -174,6 +174,13 @@ namespace PomoLibrary.ViewModel
         private void CurrentSession_TypeChanged(object sender, PomoSessionType newSessionType)
         {
             CurrentSessionType = newSessionType;
+            
+            // If session is not of a work type, a work session was previously completed
+            // So get the session progress changes
+            if (newSessionType != PomoSessionType.Work)
+            {
+                UpdateTotalSessionProgress(CurrentSession.SessionsCompleted, CurrentSession.SessionSettings.NumberOfSessions);
+            }
         }
 
         private async void CurrentSession_SessionCompleted(object sender, EventArgs e)

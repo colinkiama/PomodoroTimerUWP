@@ -60,7 +60,6 @@ namespace PomoLibrary.Services
             }
         }
                 },
-                Scenario = ToastScenario.Alarm
             };
 
             // Create the toast notification
@@ -124,7 +123,7 @@ namespace PomoLibrary.Services
         }
 
 
-        public void ScheduleAllSessionCompletedToast(TimeSpan timeToPass, PomoSession session)
+        private void ScheduleAllSessionCompletedToast(TimeSpan timeToPass, PomoSession session)
         {
             var toastContent = new ToastContent()
             {

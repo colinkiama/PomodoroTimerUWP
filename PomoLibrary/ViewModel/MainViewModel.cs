@@ -291,6 +291,8 @@ namespace PomoLibrary.ViewModel
         internal void Resume()
         {
             bool resumedSession = CurrentSession.StartSession();
+            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType);
+            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
             if (!resumedSession)
             {
                 // Session has been completely done!
@@ -301,6 +303,8 @@ namespace PomoLibrary.ViewModel
         {
             CreateNewSession();
             CurrentSession.StartSession();
+            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType);
+            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
         }
 
         private void CreateNewSession()
@@ -312,11 +316,13 @@ namespace PomoLibrary.ViewModel
         internal void Pause()
         {
             CurrentSession.PauseSession();
+            NotificationsService.Instance.ClearScheduledNotifications();
         }
 
         internal void Stop()
         {
             CurrentSession.StopSession();
+            NotificationsService.Instance.ClearScheduledNotifications();
         }
 
         private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)

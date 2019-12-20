@@ -13,13 +13,16 @@ namespace PomoLibrary.Services
 {
     public class NotificationsService
     {
+
+        const string ScheduledNotificationID = "scheduled";
+        const string SessionStartNotificationID = "sessionStart";
         // Singleton Pattern with "Lazy"
         private static Lazy<NotificationsService> lazy =
             new Lazy<NotificationsService>(() => new NotificationsService());
 
         public static NotificationsService Instance => lazy.Value;
 
-        public void ShowSessionStartToast()
+        public void ShowSessionStartToast(TimeSpan timeToPass, PomoSessionType sessionType)
         {
             var toastContent = new ToastContent()
             {
@@ -31,11 +34,11 @@ namespace PomoLibrary.Services
             {
                 new AdaptiveText()
                 {
-                    Text = "Work session has Started"
+                    Text = $"{SessionStringHelper.GetSessionString(sessionType)} session has started"
                 },
                 new AdaptiveText()
                 {
-                    Text = "Will end at 18:00"
+                    Text = $"Will end at {DateTime.Now.Add(timeToPass)}"
                 }
             }
                     }
@@ -55,54 +58,66 @@ namespace PomoLibrary.Services
 
             // Create the toast notification
             var toastNotif = new ToastNotification(toastContent.GetXml());
-
+            toastNotif.Tag = SessionStartNotificationID;
             // And send the notification
             ToastNotificationManager.CreateToastNotifier().Show(toastNotif);
         }
 
-        public void ScheduleSessionEndToast(PomoSession session)
+        public void ScheduleSessionEndToast(TimeSpan timeToPass, PomoSessionType sessionType, PomoSession session)
         {
-            var toastContent = new ToastContent()
+            if (sessionType == PomoSessionType.LongBreak)
             {
-                Visual = new ToastVisual()
+                ScheduleAllSessionCompletedToast(timeToPass, session);
+            }
+            else
+            {
+                var toastContent = new ToastContent()
                 {
-                    BindingGeneric = new ToastBindingGeneric()
+                    Visual = new ToastVisual()
                     {
-                        Children =
+                        BindingGeneric = new ToastBindingGeneric()
+                        {
+                            Children =
             {
                 new AdaptiveText()
                 {
-                    Text = $"{SessionStringHelper.GetSessionString(session.CurrentSessionType)} session has ended"
+                    Text = $"{SessionStringHelper.GetSessionString(sessionType)} session has ended"
                 },
                 new AdaptiveText()
                 {
                     Text = $"Work Sessions Completed: {session.SessionsCompleted}/{session.SessionSettings.NumberOfSessions}"
-                }
-            }
-                    }
                 },
-                Actions = new ToastActionsCustom()
-                {
-                    Buttons =
+
+
+            }
+                        }
+                    },
+                    Actions = new ToastActionsCustom()
+                    {
+                        Buttons =
         {
             new ToastButton("Dismiss", "dismiss")
             {
                 ActivationType = ToastActivationType.Foreground
             }
         }
-                },
-                Scenario = ToastScenario.Alarm
-            };
+                    },
+                    Scenario = ToastScenario.Alarm
+                };
 
-            // Create the toast notification
-            var toastNotif = new ToastNotification(toastContent.GetXml());
+                // Create the toast notification
+                var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.UtcNow.Add(timeToPass));
+                scheduledToast.Tag = ScheduledNotificationID;
+                scheduledToast.Id = ScheduledNotificationID;
 
-            // And send the notification
-            ToastNotificationManager.CreateToastNotifier().Show(toastNotif);
+                // And send the notification
+                ToastNotificationManager.CreateToastNotifier().AddToSchedule(scheduledToast);
+            }
+
         }
 
 
-        public void ScheduleAllSessionCompletedToast()
+        public void ScheduleAllSessionCompletedToast(TimeSpan timeToPass, PomoSession session)
         {
             var toastContent = new ToastContent()
             {
@@ -119,7 +134,12 @@ namespace PomoLibrary.Services
                 new AdaptiveText()
                 {
                     Text = "You've completed all of your sessions! 🥳"
-                }
+                },
+                new AdaptiveText()
+                {
+                    Text = $"Work Sessions Completed: {session.SessionsCompleted}/{session.SessionSettings.NumberOfSessions}"
+                },
+
             }
                     }
                 },
@@ -137,10 +157,17 @@ namespace PomoLibrary.Services
             };
 
             // Create the toast notification
-            var toastNotif = new ToastNotification(toastContent.GetXml());
+            var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.UtcNow.Add(timeToPass));
+            scheduledToast.Tag = ScheduledNotificationID; 
+            scheduledToast.Id = ScheduledNotificationID;
 
             // And send the notification
-            ToastNotificationManager.CreateToastNotifier().Show(toastNotif);
+            ToastNotificationManager.CreateToastNotifier().AddToSchedule(scheduledToast);
+        }
+
+        public void ClearScheduledNotifications()
+        {
+
         }
     }
 }

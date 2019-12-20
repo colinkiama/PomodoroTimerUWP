@@ -1,4 +1,5 @@
 ﻿using PomoLibrary.Enums;
+using PomoLibrary.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +16,7 @@ namespace PomoLibrary.Converters
             string typeAsString = "";
             if (value is PomoSessionType sessionType)
             {
-                switch (sessionType)
-                {
-                    case PomoSessionType.Work:
-                        typeAsString = "Work";
-                        break;
-                    case PomoSessionType.Break:
-                        typeAsString = "Break";
-                        break;
-                    case PomoSessionType.LongBreak:
-                        typeAsString = "Long Break";
-                        break;
-                }
+                typeAsString = SessionStringHelper.GetSessionString(sessionType);
             }
 
             return typeAsString;

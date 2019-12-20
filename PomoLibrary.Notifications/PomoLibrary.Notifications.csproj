@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0379C0F-390F-489F-8617-DFAD89879052}</ProjectGuid>
+    <ProjectGuid>{6eeba4f3-b8bb-4b60-905a-001905d68864}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PomoLibrary</RootNamespace>
-    <AssemblyName>PomoLibrary</AssemblyName>
+    <RootNamespace>PomoLibrary.Notifications</RootNamespace>
+    <AssemblyName>PomoLibrary.Notifications</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
@@ -120,97 +120,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Converters\ArrayToProgressFraction.cs" />
-    <Compile Include="Converters\BoolToMiniViewGlyh.cs" />
-    <Compile Include="Converters\FormattedTimeConverter.cs" />
-    <Compile Include="Converters\SessionStateToPlayPauseLabel.cs" />
-    <Compile Include="Converters\SessionStateToGlyph.cs" />
-    <Compile Include="Converters\SessionTypeToString.cs" />
-    <Compile Include="Dialogs\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\SessionCompletedDialog.xaml.cs">
-      <DependentUpon>SessionCompletedDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Enums\PomoSessionType.cs" />
-    <Compile Include="Helpers\AnimationHelper.cs" />
-    <Compile Include="Helpers\AppStartupHelper.cs" />
-    <Compile Include="Helpers\ReviewHelper.cs" />
-    <Compile Include="Helpers\SessionStringHelper.cs" />
-    <Compile Include="Model\MenuItem.cs" />
-    <Compile Include="Model\SessionTimer.cs" />
-    <Compile Include="Enums\PomoSessionState.cs" />
-    <Compile Include="Enums\TimeUnit.cs" />
-    <Compile Include="Model\PomoSession.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\FileIOService.cs" />
-    <Compile Include="Services\MenuButtonService.cs" />
-    <Compile Include="Services\MiniViewService.cs" />
-    <Compile Include="Services\NavService.cs" />
-    <Compile Include="Services\NotificationsService.cs" />
-    <Compile Include="Services\SessionService.cs" />
-    <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Structs\NextSessionData.cs" />
-    <Compile Include="Structs\PomoSessionLength.cs" />
-    <Compile Include="Structs\PomoSessionSettings.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Common\Notifier.cs" />
-    <Compile Include="ViewModel\SettingsViewModel.cs" />
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MenuView.xaml.cs">
-      <DependentUpon>MenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\PomoLibrary.rd.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.9</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Services.Store.Engagement">
-      <Version>10.1901.28001</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
-      <Version>6.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
-      <Version>2.2.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Dialogs\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\SessionCompletedDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="Microsoft.Services.Store.Engagement, Version=10.0">
-      <Name>Microsoft Engagement Framework</Name>
-    </SDKReference>
-    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
-      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
-    </SDKReference>
+    <EmbeddedResource Include="Properties\PomoLibrary.Notifications.rd.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

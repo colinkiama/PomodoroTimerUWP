@@ -14,6 +14,7 @@
         <converters:FormattedTimeConverter x:Key="FormatTimeConv"/>
         <converters:SessionTypeToString x:Key="SessionTypeToStringConv"/>
         <converters:BoolToMiniViewGlyh x:Key="BoolToMiniViewGlyphConv"/>
+        <converters:ArrayToProgressFraction x:Key="ArrayToProgressFractionConv"/>
     </Page.Resources>
     <ScrollViewer Background="Transparent">
         <Grid>
@@ -24,7 +25,8 @@
             </Grid.RowDefinitions>
             <StackPanel HorizontalAlignment="Right" Margin="0,0,20,0">
                 <TextBlock FontWeight="SemiBold" Text="Sessions:" HorizontalAlignment="Center"/>
-                <TextBlock Text="1/10" x:Name="SessionProgressTextBlock" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind _viewModel.TotalSessionProgress, Mode=OneWay, Converter={StaticResource ArrayToProgressFractionConv}}" x:Name="SessionProgressTextBlock" 
+                           HorizontalAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Row="1"
                         Margin="0,0,0,0"

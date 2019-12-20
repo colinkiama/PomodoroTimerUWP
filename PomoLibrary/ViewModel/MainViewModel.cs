@@ -100,10 +100,22 @@ namespace PomoLibrary.ViewModel
         }
 
 
+        private int[] _totalSessionProgress;
+
+        public int[] TotalSessionProgress
+        {
+            get { return _totalSessionProgress; }
+            set
+            {
+                _totalSessionProgress = value;
+                NotifyPropertyChanged();
+            }
+        }
 
 
         public MainViewModel()
         {
+            TotalSessionProgress = new int[] { 0, 0 };
             CurrentSessionState = PomoSessionState.Stopped;
             PlayPauseCommand = new RelayCommand(PlayPauseCommandCalled);
             ResetCommand = new RelayCommand(ResetCommandCalled);
@@ -148,10 +160,15 @@ namespace PomoLibrary.ViewModel
             CurrentSession.SessionCompleted += CurrentSession_SessionCompleted;
             CurrentSession.StateChanged += CurrentSession_StateChanged;
             CurrentSession.TypeChanged += CurrentSession_TypeChanged;
-
+            FillInSessionInitialSessionProgress(CurrentSession.SessionsCompleted, CurrentSession.SessionSettings.NumberOfSessions);
             // TODO: Adjust this to support the different Session Lengths for each session state
             _sessionLength = TimeSpan.FromMilliseconds(CurrentSession.SessionSettings.WorkSessionLength.TimeInMilliseconds);
             CurrentSessionTime = _sessionLength;
+        }
+
+        private void FillInSessionInitialSessionProgress(int sessionsCompleted, int numberOfSessions)
+        {
+            TotalSessionProgress = new int[] { sessionsCompleted, numberOfSessions };
         }
 
         private void CurrentSession_TypeChanged(object sender, PomoSessionType newSessionType)

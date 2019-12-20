@@ -23,7 +23,8 @@ namespace PomoLibrary.ViewModel
             {
                 if (_workSessionLength != value)
                 {
-                    _workSessionLength = value;
+                    // Prevents negative numbers from affecting the app
+                    _workSessionLength = Math.Abs(value);
                     NotifyPropertyChanged();
                 }
             }
@@ -54,7 +55,7 @@ namespace PomoLibrary.ViewModel
             {
                 if (_breakSessionLength != value)
                 {
-                    _breakSessionLength = value;
+                    _breakSessionLength = Math.Abs(value);
                     NotifyPropertyChanged();
                 }
             }
@@ -84,7 +85,7 @@ namespace PomoLibrary.ViewModel
             {
                 if (_longBreakSessionLength != value)
                 {
-                    _longBreakSessionLength = value;
+                    _longBreakSessionLength = Math.Abs(value);
                     NotifyPropertyChanged();
                 }
             }
@@ -114,7 +115,7 @@ namespace PomoLibrary.ViewModel
             {
                 if (_numberOfSessions != value)
                 {
-                    _numberOfSessions = value;
+                    _numberOfSessions = Math.Abs(value);
                     NotifyPropertyChanged();
                 }
             }

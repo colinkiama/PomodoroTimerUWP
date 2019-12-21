@@ -35,13 +35,13 @@ namespace PomoLibrary.Model
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalInMilliseconds);
 
-            TimesToTick = (int)Math.Ceiling(sessionTime.TimeInMilliseconds / timer.Interval.TotalMilliseconds);
+            TimesToTick = (int)Math.Round(sessionTime.TimeInMilliseconds / TimerIntervalInMilliseconds, MidpointRounding.AwayFromZero);
         }
 
         public void SetTimer(TimeSpan timeToRunFor)
         {
             TimesTicked = 0;
-            TimesToTick = (int)Math.Ceiling(timeToRunFor.TotalMilliseconds / timer.Interval.TotalMilliseconds);
+            TimesToTick = (int)Math.Round(timeToRunFor.TotalSeconds / TimerIntervalInMilliseconds * 1000, MidpointRounding.AwayFromZero);
         }
 
         private void Timer_Tick(object sender, object e)
@@ -87,7 +87,7 @@ namespace PomoLibrary.Model
         internal void CatchUp()
         {
             TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            int ticksToAdd = timeSinceLastTick.Milliseconds / TimerIntervalInMilliseconds;
+            int ticksToAdd = (int)Math.Round(timeSinceLastTick.TotalSeconds / TimerIntervalInMilliseconds * 1000, MidpointRounding.AwayFromZero);
             TimesTicked += ticksToAdd;
         }
     }

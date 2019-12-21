@@ -306,6 +306,7 @@ namespace PomoLibrary.ViewModel
         // This means that the user wants to stop the whole session
         private async void SessionCompletedDialog_CloseButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
         {
+            NotificationsService.Instance.ClearAllNotifications();
             await FileIOService.Instance.RemoveCurrentSessionData();
             CreateNewSession();
         }
@@ -313,6 +314,7 @@ namespace PomoLibrary.ViewModel
         // This means that the user wants to continue the session
         private void SessionCompletedDialog_PrimaryButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
         {
+            NotificationsService.Instance.ClearAllNotifications();
             ContinueSession();
         }
 

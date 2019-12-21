@@ -30,7 +30,7 @@ namespace PomoLibrary.Services
         }
         public static NotificationsService Instance => lazy.Value;
 
-        public void ShowSessionStartToast(TimeSpan timeToPass, PomoSessionType sessionType)
+        public void ShowSessionStartToast(TimeSpan timeToPass, PomoSessionType sessionType, PomoSession session)
         {
             var toastContent = new ToastContent()
             {
@@ -48,6 +48,11 @@ namespace PomoLibrary.Services
                 {
                     Text = $"Will end at {DateTime.Now.Add(timeToPass)}"
                 }
+                ,
+                new AdaptiveText()
+                {
+                    Text = $"Work Sessions Completed: {session.SessionsCompleted}/{session.SessionSettings.NumberOfSessions}"
+                },
             }
                     }
                 },

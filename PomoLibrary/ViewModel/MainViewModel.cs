@@ -347,7 +347,7 @@ namespace PomoLibrary.ViewModel
         internal void Continue()
         {
             bool resumedSession = CurrentSession.StartSession();
-            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType);
+            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType, CurrentSession);
             NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength, CurrentSessionType, CurrentSession);
             if (!resumedSession)
             {
@@ -358,7 +358,7 @@ namespace PomoLibrary.ViewModel
         internal void Resume()
         {
             CurrentSession.ResumeSession();
-            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType);
+            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
             NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
         }
         
@@ -367,7 +367,7 @@ namespace PomoLibrary.ViewModel
         {
             CreateNewSession();
             CurrentSession.StartSession();
-            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType);
+            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType, CurrentSession);
             NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength, CurrentSessionType, CurrentSession);
         }
 

@@ -162,7 +162,7 @@ namespace PomoLibrary.ViewModel
                     // Session is still going. Catch up then resume the session
                     NotificationsService.Instance.ClearAllNotifications();
                     CurrentSession.TimerCatchup();
-                    Resume();
+                    Continue();
                 }
             }
             else if(currentSessionState == PomoSessionState.Stopped)
@@ -331,7 +331,7 @@ namespace PomoLibrary.ViewModel
                 _sessionLength = nextSessionData.NextSessionLength;
                 CurrentSessionTime = _sessionLength;
                 CurrentSessionType = nextSessionData.NextSessionType;
-                Resume();
+                Continue();
             }
 
         }
@@ -342,23 +342,31 @@ namespace PomoLibrary.ViewModel
         }
 
 
-        internal void Resume()
+        internal void Continue()
         {
             bool resumedSession = CurrentSession.StartSession();
-            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType);
-            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType);
+            NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength, CurrentSessionType, CurrentSession);
             if (!resumedSession)
             {
                 // Session has been completely done!
             }
         }
 
+        internal void Resume()
+        {
+            CurrentSession.ResumeSession();
+            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType);
+            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
+        }
+        
+
         internal void Start()
         {
             CreateNewSession();
             CurrentSession.StartSession();
-            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType);
-            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType);
+            NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength, CurrentSessionType, CurrentSession);
         }
 
         private void CreateNewSession()

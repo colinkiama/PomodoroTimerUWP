@@ -105,8 +105,11 @@ namespace PomoLibrary.Services
         {
             try
             {
-                var file = await localFolder.GetFileAsync(CurrentSessionDataFileName);
-                await file.DeleteAsync();
+                var file = await localFolder.TryGetItemAsync(CurrentSessionDataFileName);
+                if (file != null)
+                {
+                    await file.DeleteAsync();
+                }
             }
             catch (Exception)
             {

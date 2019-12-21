@@ -19,7 +19,7 @@ namespace PomoLibrary.Model
 
         public int TimesTicked { get; set; } = 0;
         public int TimesToTick { get; set; } = 0;
-        public DateTimeOffset LastTickTime { get; set; }
+        public DateTime LastTickTime { get; set; }
 
         public SessionTimer()
         {
@@ -48,7 +48,7 @@ namespace PomoLibrary.Model
         {
             TimesTicked++;
             Debug.WriteLine($"Times ticked: {TimesTicked}/{TimesToTick}");
-            LastTickTime = DateTimeOffset.UtcNow;
+            LastTickTime = DateTimeOffset.UtcNow.UtcDateTime;
             if (TimesTicked > TimesToTick)
             {
                 timer.Stop();
@@ -82,7 +82,7 @@ namespace PomoLibrary.Model
 
         internal void CatchUp()
         {
-            TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow - LastTickTime;
+            TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
             int ticksToAdd = (int)(timeSinceLastTick.TotalSeconds / timer.Interval.TotalSeconds);
             TimesTicked += ticksToAdd;
         }

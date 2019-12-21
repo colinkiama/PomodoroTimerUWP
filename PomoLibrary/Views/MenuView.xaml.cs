@@ -30,7 +30,7 @@ namespace PomoLibrary.Views
         private List<MenuItem> _menuSettings { get; set; } = new List<MenuItem>
         {
             new MenuItem{ Title= "Settings" ,IconGlyph = "\xE713" },
-            new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
+            //new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
             new MenuItem{ Title= "About" ,IconGlyph = "\xE897" },
         };
 
@@ -58,10 +58,10 @@ namespace PomoLibrary.Views
                     case 0:
                         Frame.Navigate(typeof(SettingsView));
                         break;
+                    //case 1:
+                    //    //Frame.Navigate(typeof(StatisticsView))
+                    //    break;
                     case 1:
-                        //Frame.Navigate(typeof(StatisticsView))
-                        break;
-                    case 2:
                         await ShowAboutDialogAsync();
                         break;
                 }

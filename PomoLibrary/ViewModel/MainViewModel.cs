@@ -13,6 +13,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 namespace PomoLibrary.ViewModel
@@ -133,7 +135,7 @@ namespace PomoLibrary.ViewModel
 
         private bool TryGetLoadedSession()
         {
-            
+
             PomoSession loadedSession = FileIOService.Instance.GetLoadedCurrentSessionData();
             bool wasSessionLoaded = loadedSession != null;
             if (wasSessionLoaded)
@@ -165,7 +167,7 @@ namespace PomoLibrary.ViewModel
                     Continue();
                 }
             }
-            else if(currentSessionState == PomoSessionState.Stopped)
+            else if (currentSessionState == PomoSessionState.Stopped)
             {
                 // Simply show session ended dialog
                 ShowSessionCompletedDialog();
@@ -224,7 +226,7 @@ namespace PomoLibrary.ViewModel
             // TODO: Adjust this to support the different Session Lengths for each session state
             _sessionLength = PickLengthFromType(_currentSessionType);
             UpdateSessionTime(CurrentSession.Timer.GetTimeElapsed());
-            
+
         }
 
         private TimeSpan PickLengthFromType(PomoSessionType currentSessionType)
@@ -275,17 +277,23 @@ namespace PomoLibrary.ViewModel
 
         private void ShowSessionCompletedDialog()
         {
-            try
-            {
-                var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSessionType);
-                sessionCompletedDialog.PrimaryButtonClick += SessionCompletedDialog_PrimaryButtonClick;
-                sessionCompletedDialog.CloseButtonClick += SessionCompletedDialog_CloseButtonClick;
-                _ = sessionCompletedDialog.ShowAsync();
-            }
-            catch (Exception)
-            {
 
-            }
+            var d = CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                try
+                {
+                    var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSessionType);
+                    sessionCompletedDialog.PrimaryButtonClick += SessionCompletedDialog_PrimaryButtonClick;
+                    sessionCompletedDialog.CloseButtonClick += SessionCompletedDialog_CloseButtonClick;
+                    await sessionCompletedDialog.ShowAsync();
+                }
+                catch (Exception)
+                {
+
+                }
+            });
+
+
         }
 
         private async Task ShowSessionCompletedDialogAsync()
@@ -361,7 +369,7 @@ namespace PomoLibrary.ViewModel
             NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
             NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
         }
-        
+
 
         internal void Start()
         {

@@ -39,7 +39,7 @@ namespace PomodoroTimerUWP.Views
             MenuBackgroundArea.Visibility = Visibility.Collapsed;
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             MainFrame.Navigate(typeof(MainView));
@@ -47,7 +47,6 @@ namespace PomodoroTimerUWP.Views
             NavService.Instance.LoadFrame(MenuFrame);
 
             MenuBackgroundArea.Visibility = Visibility.Collapsed;
-            await ReviewHelper.TryRequestReviewAsync();
         }
 
         private async void MenuButton_Click(object sender, RoutedEventArgs e)

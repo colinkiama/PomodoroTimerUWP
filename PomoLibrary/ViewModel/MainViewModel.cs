@@ -278,6 +278,7 @@ namespace PomoLibrary.ViewModel
         private void ShowSessionCompletedDialog()
         {
 
+            // Workaround to get this ContentDialog to showup on app startup on Mobile
             var d = CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 try

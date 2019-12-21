@@ -131,7 +131,20 @@ namespace PomoLibrary.ViewModel
                 CreateNewSession();
             }
             Application.Current.EnteredBackground += Current_EnteredBackground;
+            Application.Current.Resuming += Current_Resuming;
         }
+
+        private void Current_Resuming(object sender, object e)
+        {
+            if (CurrentSessionState == PomoSessionState.InProgress)
+            {
+                NotificationsService.Instance.ClearAllNotifications();
+                CurrentSession.TimerCatchup();
+                Resume();
+            }
+        }
+
+       
 
         private bool TryGetLoadedSession()
         {
@@ -367,8 +380,8 @@ namespace PomoLibrary.ViewModel
         internal void Resume()
         {
             CurrentSession.ResumeSession();
-            NotificationsService.Instance.ShowSessionStartToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
-            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionTime, CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ShowSessionStartToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
         }
 
 

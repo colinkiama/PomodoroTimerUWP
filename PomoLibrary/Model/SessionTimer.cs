@@ -14,7 +14,7 @@ namespace PomoLibrary.Model
     {
         public event EventHandler<TimeSpan> TimerTicked;
         public event EventHandler TimerEnded;
-
+        int TimerIntervalInMilliseconds = 250;
         DispatcherTimer timer;
 
         public int TimesTicked { get; set; } = 0;
@@ -25,7 +25,7 @@ namespace PomoLibrary.Model
         {
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalInMilliseconds);
         }
         
         public SessionTimer(PomoSessionLength sessionTime)
@@ -33,7 +33,7 @@ namespace PomoLibrary.Model
             timer = new DispatcherTimer();
             TimesTicked = 0;
             timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalInMilliseconds);
 
             TimesToTick = (int)Math.Ceiling(sessionTime.TimeInMilliseconds / timer.Interval.TotalMilliseconds);
         }
@@ -62,7 +62,7 @@ namespace PomoLibrary.Model
 
         }
 
-        public TimeSpan GetTimeElapsed() => TimeSpan.FromSeconds(timer.Interval.TotalSeconds * TimesTicked);
+        public TimeSpan GetTimeElapsed() => TimeSpan.FromMilliseconds(TimerIntervalInMilliseconds * TimesTicked);
 
         public bool StartTimer()
         {
@@ -87,7 +87,7 @@ namespace PomoLibrary.Model
         internal void CatchUp()
         {
             TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            int ticksToAdd = (int)(timeSinceLastTick.TotalSeconds / timer.Interval.TotalSeconds);
+            int ticksToAdd = timeSinceLastTick.Milliseconds / TimerIntervalInMilliseconds;
             TimesTicked += ticksToAdd;
         }
     }

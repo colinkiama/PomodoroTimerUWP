@@ -71,6 +71,10 @@ namespace PomoLibrary.Model
             {
                 timer.Start();
             }
+            else
+            {
+                TimerEnded?.Invoke(this, EventArgs.Empty);
+            }
 
             return willStart;
         }

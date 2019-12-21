@@ -118,7 +118,7 @@ namespace PomoLibrary.ViewModel
             TotalSessionProgress = new int[] { 0, 0 };
             CurrentSessionState = PomoSessionState.Stopped;
             PlayPauseCommand = new RelayCommand(PlayPauseCommandCalled);
-            ResetCommand = new RelayCommand(ResetCommandCalled);
+            ResetCommand = new RelayCommand(async () => await ResetCommandCalled());
             SettingsService.Instance.SessionSettingsUpdated += Instance_SessionSettingsUpdated;
             // Code beyond this point needs to be adjusted
             // to support instances where data from an unfinished session
@@ -140,10 +140,37 @@ namespace PomoLibrary.ViewModel
             {
                 CurrentSession = loadedSession;
                 FillInDetailsFromSession();
+                HandleSessionStateFromLoad(CurrentSessionState);
             }
             return wasSessionLoaded;
         }
 
+        private void HandleSessionStateFromLoad(PomoSessionState currentSessionState)
+        {
+            // Sometime has passed so we need to:
+            if (currentSessionState == PomoSessionState.InProgress)
+            {
+                // Session has ended since the last time the session was in progress
+                if (SessionService.Instance.SessionEndArgumentDetected)
+                {
+                    CurrentSession.CurrentSessionState = PomoSessionState.Stopped;
+                    ClearCurrentSessionTime();
+                    ShowSessionCompletedDialog();
+                }
+                else
+                {
+                    // Session is still going. Catch up then resume the session
+                    NotificationsService.Instance.ClearAllNotifications();
+                    CurrentSession.TimerCatchup();
+                    Resume();
+                }
+            }
+            else if(currentSessionState == PomoSessionState.Stopped)
+            {
+                // Simply show session ended dialog
+                ShowSessionCompletedDialog();
+            }
+        }
 
         private async void Current_EnteredBackground(object sender, Windows.ApplicationModel.EnteredBackgroundEventArgs e)
         {
@@ -156,15 +183,16 @@ namespace PomoLibrary.ViewModel
             deferral.Complete();
         }
 
+
         private void Instance_SessionSettingsUpdated(object sender, PomoSessionSettings e)
         {
             // Creating a new session is easier than updating the session with changes
             CreateNewSession();
         }
 
-        private void ResetCommandCalled()
+        private async Task ResetCommandCalled()
         {
-            Stop();
+            await StopAsync();
             CreateNewSession();
         }
 
@@ -236,7 +264,32 @@ namespace PomoLibrary.ViewModel
 
         private async void CurrentSession_SessionCompleted(object sender, EventArgs e)
         {
+            ClearCurrentSessionTime();
+            await ShowSessionCompletedDialogAsync();
+        }
+
+        private void ClearCurrentSessionTime()
+        {
             CurrentSessionTime = new TimeSpan(0);
+        }
+
+        private void ShowSessionCompletedDialog()
+        {
+            try
+            {
+                var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSessionType);
+                sessionCompletedDialog.PrimaryButtonClick += SessionCompletedDialog_PrimaryButtonClick;
+                sessionCompletedDialog.CloseButtonClick += SessionCompletedDialog_CloseButtonClick;
+                sessionCompletedDialog.ShowAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private async Task ShowSessionCompletedDialogAsync()
+        {
             try
             {
                 var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSessionType);
@@ -248,7 +301,6 @@ namespace PomoLibrary.ViewModel
             {
 
             }
-
         }
 
         // This means that the user wants to stop the whole session
@@ -321,10 +373,11 @@ namespace PomoLibrary.ViewModel
             NotificationsService.Instance.ClearAllNotifications();
         }
 
-        internal void Stop()
+        internal async Task StopAsync()
         {
-            CurrentSession.StopSession();
             NotificationsService.Instance.ClearAllNotifications();
+            CurrentSession.StopSession();
+            await FileIOService.Instance.RemoveCurrentSessionData();
         }
 
         private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)

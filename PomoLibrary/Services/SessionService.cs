@@ -10,7 +10,7 @@ namespace PomoLibrary.Services
 {
     public class SessionService
     {
-
+        public bool SessionEndArgumentDetected { get; private set; }
         private PomoSessionState _currentState;
         // Singleton Pattern with "Lazy"
         private static Lazy<SessionService> lazy =
@@ -20,6 +20,7 @@ namespace PomoLibrary.Services
 
         private SessionService()
         {
+            SessionEndArgumentDetected = false;
             _currentState = PomoSessionState.InProgress;
         }
 
@@ -36,6 +37,10 @@ namespace PomoLibrary.Services
             return _currentState;
         }
 
+        public void DetectSessionEndArgument()
+        {
+            SessionEndArgumentDetected = true;
+        }
         
     }
 }

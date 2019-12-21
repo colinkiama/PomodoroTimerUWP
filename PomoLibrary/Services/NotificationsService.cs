@@ -17,6 +17,7 @@ namespace PomoLibrary.Services
 
         const string ScheduledNotificationID = "scheduled";
         const string SessionStartNotificationID = "sessionStart";
+        public const string SessionEndArgument = "sessionEnd";
 
         private ToastNotifier _toastNotifier;
         // Singleton Pattern with "Lazy"
@@ -102,7 +103,7 @@ namespace PomoLibrary.Services
                     {
                         Buttons =
         {
-            new ToastButton("Dismiss", "dismiss")
+            new ToastButton("Dismiss", SessionEndArgument)
             {
                 ActivationType = ToastActivationType.Foreground
             }
@@ -153,7 +154,7 @@ namespace PomoLibrary.Services
                 {
                     Buttons =
         {
-            new ToastButton("Dismiss", "dismiss")
+            new ToastButton("Dismiss", SessionEndArgument)
             {
                 ActivationType = ToastActivationType.Foreground
             }

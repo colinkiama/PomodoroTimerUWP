@@ -1,5 +1,6 @@
 ﻿using PomodoroTimerUWP.Views;
 using PomoLibrary.Helpers;
+using PomoLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -94,7 +95,15 @@ namespace PomodoroTimerUWP
             base.OnActivated(args);
             await AppStartupHelper.AppStartupAsync();
             Frame rootFrame = Window.Current.Content as Frame;
-
+            string argument = "";
+            if (args is ToastNotificationActivatedEventArgs toastArgs)
+            {
+                argument = toastArgs.Argument;
+                if (argument == NotificationsService.SessionEndArgument)
+                {
+                    SessionService.Instance.DetectSessionEndArgument();
+                }
+            }
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -114,7 +123,7 @@ namespace PomodoroTimerUWP
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(typeof(ShellView), "");
+                rootFrame.Navigate(typeof(ShellView), argument);
             }
             // Ensure the current window is active
             Window.Current.Activate();

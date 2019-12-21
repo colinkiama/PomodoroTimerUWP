@@ -163,6 +163,11 @@ namespace PomoLibrary.Model
             return hasStarted;
         }
 
+        internal void TimerCatchup()
+        {
+            Timer.CatchUp();
+        }
+
         private void ClearNextSessionCache()
         {
             _nextSessionCache = default;

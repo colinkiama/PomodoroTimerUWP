@@ -140,44 +140,12 @@ namespace PomoLibrary.ViewModel
             {
                 CurrentSession = loadedSession;
                 FillInDetailsFromSession();
-                //HandleSessionStateFromLoad(CurrentSessionState);
+                HandleSessionStateFromLoad(CurrentSessionState);
             }
             return wasSessionLoaded;
         }
 
-        // Runs after navigating to page
-        public async Task HandleOnNavigationAsync()
-        {
-            await HandleSessionStateFromLoadAsync(CurrentSessionState);
-        }
-        //private void HandleSessionStateFromLoad(PomoSessionState currentSessionState)
-        //{
-        //    // Sometime has passed so we need to:
-        //    if (currentSessionState == PomoSessionState.InProgress)
-        //    {
-        //        // Session has ended since the last time the session was in progress
-        //        if (SessionService.Instance.SessionEndArgumentDetected)
-        //        {
-        //            CurrentSession.CurrentSessionState = PomoSessionState.Stopped;
-        //            ClearCurrentSessionTime();
-        //            ShowSessionCompletedDialog();
-        //        }
-        //        else
-        //        {
-        //            // Session is still going. Catch up then resume the session
-        //            NotificationsService.Instance.ClearAllNotifications();
-        //            CurrentSession.TimerCatchup();
-        //            Continue();
-        //        }
-        //    }
-        //    else if(currentSessionState == PomoSessionState.Stopped)
-        //    {
-        //        // Simply show session ended dialog
-        //        ShowSessionCompletedDialog();
-        //    }
-        //}
-
-        private async Task HandleSessionStateFromLoadAsync(PomoSessionState currentSessionState)
+        private void HandleSessionStateFromLoad(PomoSessionState currentSessionState)
         {
             // Sometime has passed so we need to:
             if (currentSessionState == PomoSessionState.InProgress)
@@ -187,7 +155,7 @@ namespace PomoLibrary.ViewModel
                 {
                     CurrentSession.CurrentSessionState = PomoSessionState.Stopped;
                     ClearCurrentSessionTime();
-                    await ShowSessionCompletedDialogAsync();
+                    ShowSessionCompletedDialog();
                 }
                 else
                 {
@@ -197,12 +165,13 @@ namespace PomoLibrary.ViewModel
                     Continue();
                 }
             }
-            else if (currentSessionState == PomoSessionState.Stopped)
+            else if(currentSessionState == PomoSessionState.Stopped)
             {
                 // Simply show session ended dialog
-                await ShowSessionCompletedDialogAsync();
+                ShowSessionCompletedDialog();
             }
         }
+
         private async void Current_EnteredBackground(object sender, Windows.ApplicationModel.EnteredBackgroundEventArgs e)
         {
             var deferral = e.GetDeferral();

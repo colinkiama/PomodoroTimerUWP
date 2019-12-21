@@ -29,11 +29,6 @@ namespace PomoLibrary.Views
             _viewModel = new MainViewModel();
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            await _viewModel.HandleOnNavigationAsync();
-        }
-
+        
     }
 }

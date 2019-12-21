@@ -280,7 +280,7 @@ namespace PomoLibrary.ViewModel
                 var sessionCompletedDialog = new SessionCompletedDialog(CurrentSession.CurrentSessionType);
                 sessionCompletedDialog.PrimaryButtonClick += SessionCompletedDialog_PrimaryButtonClick;
                 sessionCompletedDialog.CloseButtonClick += SessionCompletedDialog_CloseButtonClick;
-                sessionCompletedDialog.ShowAsync();
+                _ = sessionCompletedDialog.ShowAsync();
             }
             catch (Exception)
             {

@@ -71,6 +71,7 @@ namespace PomoLibrary.Services
             // Create the toast notification
             var toastNotif = new ToastNotification(toastContent.GetXml());
             toastNotif.Tag = SessionStartNotificationID;
+            toastNotif.SuppressPopup = true;
             // And send the notification
             _toastNotifier.Show(toastNotif);
         }

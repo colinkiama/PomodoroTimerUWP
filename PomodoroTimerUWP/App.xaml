@@ -4,6 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PomodoroTimerUWP">
     <Application.Resources>
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Dark">
+                            <!--Updated Dark Background-->
+                            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#2E2E2E" />
+                        </ResourceDictionary>
+
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#FFFFFF" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+
+            </ResourceDictionary.MergedDictionaries>
+
+
+        </ResourceDictionary>
+
+
     </Application.Resources>
 </Application>

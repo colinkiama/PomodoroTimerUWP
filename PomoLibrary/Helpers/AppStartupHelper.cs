@@ -8,6 +8,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.ViewManagement;
+using Microsoft.Services.Store.Engagement;
 
 namespace PomoLibrary.Helpers
 {
@@ -20,6 +21,8 @@ namespace PomoLibrary.Helpers
             _appView.SetPreferredMinSize(new Size(192,192));
             await SettingsService.Instance.LoadSettingsAsync();
             await FileIOService.Instance.LoadCurrentSessionDataAsync();
+            StoreServicesEngagementManager engagementManager = StoreServicesEngagementManager.GetDefault();
+            await engagementManager.RegisterNotificationChannelAsync();
         }
 
         private static void ExtendViewIntoTitleBar()

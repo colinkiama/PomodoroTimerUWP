@@ -136,22 +136,25 @@ namespace PomoLibrary.ViewModel
 
         private void Current_Resuming(object sender, object e)
         {
-
-            NotificationsService.Instance.ClearAllNotifications();
-            CurrentSession.TimerCatchup();
-
-            // Important!: There's a possibility that after catching up, the session may have already ended.
-            // This would cause problems when trying to schedule a new toast, causing the app to crash.
-            // So we wrap the method in a try-catch block.
-            try
+            if (CurrentSessionState == PomoSessionState.InProgress)
             {
-                NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
+                NotificationsService.Instance.ClearAllNotifications();
+                CurrentSession.TimerCatchup();
 
-            }
-            catch(Exception ex)
-            {
+                // Important!: There's a possibility that after catching up, the session may have already ended.
+                // This would cause problems when trying to schedule a new toast, causing the app to crash.
+                // So we wrap the method in a try-catch block.
+                try
+                {
+                    NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
 
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
+
         }
 
 

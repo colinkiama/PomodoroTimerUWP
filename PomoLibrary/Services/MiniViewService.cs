@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Foundation.Metadata;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -78,7 +79,9 @@ namespace PomoLibrary.Services
             switch (_appView.ViewMode)
             {
                 case ApplicationViewMode.Default:
-                    IsInMiniView = await _appView.TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
+                    ViewModePreferences compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
+                    compactOptions.CustomSize = new Size(450, 450);
+                    IsInMiniView = await _appView.TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
                     break;
                 case ApplicationViewMode.CompactOverlay:
                     IsInMiniView = !(await _appView.TryEnterViewModeAsync(ApplicationViewMode.Default));

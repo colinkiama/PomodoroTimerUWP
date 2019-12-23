@@ -139,8 +139,19 @@ namespace PomoLibrary.ViewModel
 
             NotificationsService.Instance.ClearAllNotifications();
             CurrentSession.TimerCatchup();
-            Resume();
-            
+
+            // Important!: There's a possibility that after catching up, the session may have already ended.
+            // This would cause problems when trying to schedule a new toast, causing the app to crash.
+            // So we wrap the method in a try-catch block.
+            try
+            {
+                NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
+
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
 

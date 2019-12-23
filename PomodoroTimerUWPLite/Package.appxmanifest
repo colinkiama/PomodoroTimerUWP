@@ -9,7 +9,7 @@
   <Identity
     Name="64942ColinKiama.PomodoroTimerUWP"
     Publisher="CN=D2DBA6D7-296F-484A-BABE-2B76C9C2AF78"
-    Version="2.0.5.0" />
+    Version="2.0.6.0" />
 
   <mp:PhoneIdentity PhoneProductId="6bdafdd6-9425-4f2c-af9f-68b7a3e2c77a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

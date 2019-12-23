@@ -14,7 +14,8 @@ namespace PomoLibrary.Model
     {
         public event EventHandler<TimeSpan> TimerTicked;
         public event EventHandler TimerEnded;
-        int TimerIntervalInMilliseconds = 250;
+        const int TimerIntervalInMilliseconds = 250;
+        const double TimerIntervalInSeconds = 0.25;
         DispatcherTimer timer;
 
         public int TimesTicked { get; set; } = 0;
@@ -34,14 +35,14 @@ namespace PomoLibrary.Model
             TimesTicked = 0;
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalInMilliseconds);
-
-            TimesToTick = (int)Math.Round(sessionTime.TimeInMilliseconds / TimerIntervalInMilliseconds, MidpointRounding.AwayFromZero);
+            double sessionTimeInSeconds = ConvertMillisecondsToSeconds(sessionTime.TimeInMilliseconds);
+            TimesToTick = (int)Math.Round(sessionTimeInSeconds / TimerIntervalInSeconds, MidpointRounding.AwayFromZero);
         }
 
         public void SetTimer(TimeSpan timeToRunFor)
-        {
+        {   
             TimesTicked = 0;
-            TimesToTick = (int)Math.Round(timeToRunFor.TotalSeconds / TimerIntervalInMilliseconds * 1000, MidpointRounding.AwayFromZero);
+            TimesToTick = (int)Math.Round(timeToRunFor.TotalSeconds / TimerIntervalInSeconds, MidpointRounding.AwayFromZero);
         }
 
         private void Timer_Tick(object sender, object e)
@@ -87,8 +88,14 @@ namespace PomoLibrary.Model
         internal void CatchUp()
         {
             TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            int ticksToAdd = (int)Math.Round(timeSinceLastTick.TotalSeconds / TimerIntervalInMilliseconds * 1000, MidpointRounding.AwayFromZero);
+            int ticksToAdd = (int)Math.Round(timeSinceLastTick.TotalSeconds / TimerIntervalInSeconds, MidpointRounding.AwayFromZero);
             TimesTicked += ticksToAdd;
         }
+
+        private double ConvertMillisecondsToSeconds(double milliseconds)
+        {
+            return milliseconds / 1000;
+        }
+
     }
 }

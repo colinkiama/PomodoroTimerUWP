@@ -36,6 +36,7 @@ namespace PomoLibrary.Model
         {
             timer = new DispatcherTimer();
             CurrentTickSum = 0;
+            FinalTickSum = 0;
             timer.Tick += Timer_Tick;
             timer.Interval = _timerInterval;
             SessionTime = TimeSpan.FromMilliseconds(sessionTime.TimeInMilliseconds);
@@ -44,6 +45,7 @@ namespace PomoLibrary.Model
         public void SetTimer(TimeSpan timeToRunFor)
         {
             CurrentTickSum = 0;
+            FinalTickSum = 0;
             SessionTime = timeToRunFor;
         }
 

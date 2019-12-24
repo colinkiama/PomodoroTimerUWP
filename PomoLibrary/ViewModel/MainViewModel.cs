@@ -197,7 +197,7 @@ namespace PomoLibrary.ViewModel
         private async void Current_EnteredBackground(object sender, Windows.ApplicationModel.EnteredBackgroundEventArgs e)
         {
             var deferral = e.GetDeferral();
-            bool hasSessionNotStarted = CurrentSessionState == PomoSessionState.Stopped && CurrentSession.SessionsCompleted == 0;
+            bool hasSessionNotStarted = CurrentSessionState == PomoSessionState.Stopped && CurrentSessionTime == _sessionLength;
             if (!hasSessionNotStarted)
             {
                 await FileIOService.Instance.SaveCurrentSessionDataAsync(CurrentSession);
@@ -341,8 +341,12 @@ namespace PomoLibrary.ViewModel
         }
 
         // This means that the user wants to continue the session
-        private void SessionCompletedDialog_PrimaryButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
+        private async void SessionCompletedDialog_PrimaryButtonClick(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogButtonClickEventArgs args)
         {
+            if (CurrentSessionType == PomoSessionType.LongBreak)
+            {
+                await FileIOService.Instance.RemoveCurrentSessionData();
+            }
             NotificationsService.Instance.ClearAllNotifications();
             ContinueSession();
         }
@@ -353,6 +357,7 @@ namespace PomoLibrary.ViewModel
             NextSessionData nextSessionData = CurrentSession.GetNextSessionData();
             if (nextSessionData.NextSessionState == PomoSessionState.Stopped)
             {
+                
                 // Session is completely over
                 CreateNewSession();
             }

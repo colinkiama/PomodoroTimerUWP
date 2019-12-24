@@ -69,7 +69,7 @@ namespace PomoLibrary.Model
 
         }
 
-        public TimeSpan GetTimeLeft() => TimeSpan.FromTicks(FinalTickSum - CurrentTickSum);
+        public TimeSpan GetTimeLeft() => TimeSpan.FromTicks(SessionTime.Ticks - CurrentTickSum);
 
         public bool StartTimer()
         {
@@ -107,10 +107,6 @@ namespace PomoLibrary.Model
             CurrentTickSum += timePassedSinceLastTick.Ticks;
         }
 
-        private double ConvertMillisecondsToSeconds(double milliseconds)
-        {
-            return milliseconds / 1000;
-        }
 
     }
 }

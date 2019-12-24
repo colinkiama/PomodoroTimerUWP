@@ -18,9 +18,12 @@ namespace PomoLibrary.Model
         private TimeSpan _timerInterval = TimeSpan.FromMilliseconds(250);
         DispatcherTimer timer;
 
-        public long TimesTicked { get; set; } = 0;
-        public long TimesToTick { get; set; } = 0;
+        public long CurrentTickSum { get; set; } = 0;
+        public long FinalTickSum { get; set; } = 0;
         public DateTime LastTickTime { get; set; }
+        public DateTime SessionStartTime { get; set; }
+        public DateTime SessionEndTime { get; set; }
+        public TimeSpan SessionTime { get; set; }
 
         public SessionTimer()
         {
@@ -32,17 +35,16 @@ namespace PomoLibrary.Model
         public SessionTimer(PomoSessionLength sessionTime)
         {
             timer = new DispatcherTimer();
-            TimesTicked = 0;
+            CurrentTickSum = 0;
             timer.Tick += Timer_Tick;
             timer.Interval = _timerInterval;
-            TimeSpan sessionTimeAsTimeSpan = TimeSpan.FromMilliseconds(sessionTime.TimeInMilliseconds);
-            TimesToTick = sessionTimeAsTimeSpan.Ticks / _timerInterval.Ticks;
+            SessionTime = TimeSpan.FromMilliseconds(sessionTime.TimeInMilliseconds);
         }
 
         public void SetTimer(TimeSpan timeToRunFor)
         {   
-            TimesTicked = 0;
-            TimesToTick = timeToRunFor.Ticks / _timerInterval.Ticks;
+            CurrentTickSum = 0;
+            SessionTime = timeToRunFor;
         }
 
         // Note: Timer doesn't always tick on time
@@ -51,11 +53,11 @@ namespace PomoLibrary.Model
 
             // Calculates time since last tick and adds ticks based on the time passed
             TimeSpan timePassedSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            TimesTicked += timePassedSinceLastTick.Ticks;
+            CurrentTickSum += timePassedSinceLastTick.Ticks;
 
-            Debug.WriteLine($"Times ticked: {TimesTicked}/{TimesToTick}");
+            Debug.WriteLine($"Timer Progress: {CurrentTickSum}/{FinalTickSum}");
             LastTickTime = DateTimeOffset.UtcNow.UtcDateTime;
-            if (TimesTicked >= TimesToTick)
+            if (CurrentTickSum >= FinalTickSum)
             {
                 timer.Stop();
                 TimerEnded?.Invoke(sender, EventArgs.Empty);
@@ -67,12 +69,18 @@ namespace PomoLibrary.Model
 
         }
 
-        public TimeSpan GetTimeLeft() => TimeSpan.FromTicks(_timerInterval.Ticks * (TimesToTick - TimesTicked));
+        public TimeSpan GetTimeLeft() => TimeSpan.FromTicks(FinalTickSum - CurrentTickSum);
 
         public bool StartTimer()
         {
-            bool willStart = TimesToTick > TimesTicked;
-            DebugService.AddToLog($"Times Ticked: {TimesTicked}, Times To tick: {TimesToTick}");
+            SessionStartTime = DateTime.UtcNow;
+            SessionEndTime = SessionStartTime.Add(SessionTime);
+            FinalTickSum = SessionEndTime.Ticks - SessionStartTime.Ticks;
+            bool willStart = FinalTickSum > CurrentTickSum;
+
+            DebugService.AddToLog($"Session Start Time: {SessionStartTime}");
+            DebugService.AddToLog($"Session End Time: {SessionEndTime}");
+            DebugService.AddToLog($"Timer Progress: {CurrentTickSum}, Times To tick: {FinalTickSum}");
             
             if (willStart)
             {
@@ -96,7 +104,7 @@ namespace PomoLibrary.Model
         internal void CatchUp()
         {
             TimeSpan timePassedSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            TimesTicked += timePassedSinceLastTick.Ticks;
+            CurrentTickSum += timePassedSinceLastTick.Ticks;
         }
 
         private double ConvertMillisecondsToSeconds(double milliseconds)

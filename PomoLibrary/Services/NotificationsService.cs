@@ -122,10 +122,10 @@ namespace PomoLibrary.Services
                     };
 
                     // Create the toast notification
-                    DateTimeOffset scheduledTime = DateTimeOffset.UtcNow.Add(session.Timer.GetTimeLeft());
-                    Debug.WriteLine(scheduledTime);
-                    DebugService.AddToLog($"ScheduledTime:{scheduledTime}");
-                    var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.Now.Add(session.Timer.GetTimeLeft()));
+                    //DateTimeOffset scheduledTime = DateTimeOffset.UtcNow.Add(session.Timer.GetTimeLeft());
+                    //Debug.WriteLine(scheduledTime);
+                    //DebugService.AddToLog($"ScheduledTime:{scheduledTime}");
+                    var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), session.Timer.SessionEndTime);
                     scheduledToast.Tag = ScheduledNotificationID;
                     scheduledToast.Id = ScheduledNotificationID;
 
@@ -182,7 +182,7 @@ namespace PomoLibrary.Services
             };
 
             // Create the toast notification
-            var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.Now.Add(session.Timer.GetTimeLeft()));
+            var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), session.Timer.SessionEndTime);
             scheduledToast.Tag = ScheduledNotificationID;
             scheduledToast.Id = ScheduledNotificationID;
 

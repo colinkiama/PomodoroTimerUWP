@@ -49,7 +49,7 @@ namespace PomoLibrary.Model
 
         // Note: Timer doesn't always tick on time
         private void Timer_Tick(object sender, object e)
-        {
+         {
 
             // Calculates time since last tick and adds ticks based on the time passed
             TimeSpan timePassedSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
@@ -82,11 +82,13 @@ namespace PomoLibrary.Model
             DebugService.AddToLog($"Session Start Time: {SessionStartTime}");
             DebugService.AddToLog($"Session End Time: {SessionEndTime}");
             DebugService.AddToLog($"Timer Progress: {CurrentTickSum}, Times To tick: {FinalTickSum}");
-            
+
+            LastTickTime = DateTime.UtcNow;
+
             if (willStart)
             {
                 DebugService.AddToLog($"Session Start: {DateTimeOffset.UtcNow}");
-                LastTickTime = DateTimeOffset.UtcNow.UtcDateTime;
+                
                 timer.Start();
             }
             else

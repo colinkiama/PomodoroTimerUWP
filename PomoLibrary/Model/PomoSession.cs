@@ -190,11 +190,10 @@ namespace PomoLibrary.Model
         public bool ResumeSession()
         {
             bool hasStarted = Timer.StartTimer();
-            if (hasStarted)
-            {
-                CurrentSessionState = PomoSessionState.InProgress;
-                StateChanged?.Invoke(this, CurrentSessionState);
-            }
+
+            CurrentSessionState = PomoSessionState.InProgress;
+            StateChanged?.Invoke(this, CurrentSessionState);
+
             return hasStarted;
         }
     }

@@ -54,6 +54,7 @@ namespace PomoLibrary.Model
             // Calculates time since last tick and adds ticks based on the time passed
             TimeSpan timePassedSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
             CurrentTickSum += timePassedSinceLastTick.Ticks;
+            
 
             Debug.WriteLine($"Timer Progress: {CurrentTickSum}/{FinalTickSum}");
             LastTickTime = DateTimeOffset.UtcNow.UtcDateTime;
@@ -74,7 +75,7 @@ namespace PomoLibrary.Model
         public bool StartTimer()
         {
             SessionStartTime = DateTime.UtcNow;
-            SessionEndTime = SessionStartTime.Add(SessionTime);
+            SessionEndTime = SessionStartTime.Add(GetTimeLeft());
             FinalTickSum = SessionEndTime.Ticks - SessionStartTime.Ticks;
             bool willStart = FinalTickSum > CurrentTickSum;
 

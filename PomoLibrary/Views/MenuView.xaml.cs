@@ -3,18 +3,9 @@ using PomoLibrary.Model;
 using PomoLibrary.Services;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -27,18 +18,17 @@ namespace PomoLibrary.Views
     public sealed partial class MenuView : Page
     {
         private AboutDialog _aboutDialog = new AboutDialog();
-        private List<MenuItem> _menuSettings { get; set; } = new List<MenuItem>
-        {
-            new MenuItem{ Title= "Settings" ,IconGlyph = "\xE713" },
-            //new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
-            new MenuItem{ Title= "About" ,IconGlyph = "\xE897" },
-            new MenuItem{Title = "Debug", IconGlyph="\xE1DE"},
-        };
+        private List<MenuItem> _menuSettings { get; set; }
 
 
         public MenuView()
         {
             this.InitializeComponent();
+#if DEBUG
+            CreateMenuWithDebugLog();
+#else
+            CreateMenuForRelease();
+#endif
 
         }
 
@@ -53,7 +43,24 @@ namespace PomoLibrary.Views
             var clickedItem = e.ClickedItem;
             if (_menuSettings.Contains(clickedItem))
             {
-                var clickedMenuItem = (MenuItem)clickedItem; 
+                var clickedMenuItem = (MenuItem)clickedItem;
+
+#if DEBUG
+                switch (_menuSettings.IndexOf(clickedMenuItem))
+                {
+                    case 0:
+                        Frame.Navigate(typeof(SettingsView));
+                        break;
+                   
+                    case 1:
+                        await ShowAboutDialogAsync();
+                        break;
+                    case 2:
+                        Frame.Navigate(typeof(DebugLogView));
+                        break;
+                }
+#else
+
                 switch (_menuSettings.IndexOf(clickedMenuItem))
                 {
                     case 0:
@@ -65,11 +72,31 @@ namespace PomoLibrary.Views
                     case 1:
                         await ShowAboutDialogAsync();
                         break;
-                    case 2:
-                        Frame.Navigate(typeof(DebugLogView));
-                        break;
                 }
+#endif
+
+
             }
+
+        }
+
+        private void CreateMenuWithDebugLog()
+        {
+            _menuSettings = new List<MenuItem> {
+            new MenuItem { Title = "Settings", IconGlyph = "\xE713" },
+            //new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
+            new MenuItem { Title = "About", IconGlyph = "\xE897" },
+            new MenuItem { Title = "Debug", IconGlyph = "\xE1DE" },
+            };
+        }
+
+        private void CreateMenuForRelease()
+        {
+            _menuSettings = new List<MenuItem> {
+            new MenuItem { Title = "Settings", IconGlyph = "\xE713" },
+            //new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
+            new MenuItem { Title = "About", IconGlyph = "\xE897" },
+            };
         }
 
         private async Task ShowAboutDialogAsync()
@@ -81,7 +108,7 @@ namespace PomoLibrary.Views
             catch (Exception)
             {
 
-                
+
             }
         }
     }

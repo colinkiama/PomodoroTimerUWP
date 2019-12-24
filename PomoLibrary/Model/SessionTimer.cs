@@ -18,8 +18,8 @@ namespace PomoLibrary.Model
         private TimeSpan _timerInterval = TimeSpan.FromMilliseconds(250);
         DispatcherTimer timer;
 
-        public int TimesTicked { get; set; } = 0;
-        public int TimesToTick { get; set; } = 0;
+        public double TimesTicked { get; set; } = 0;
+        public double TimesToTick { get; set; } = 0;
         public DateTime LastTickTime { get; set; }
 
         public SessionTimer()
@@ -36,28 +36,34 @@ namespace PomoLibrary.Model
             timer.Tick += Timer_Tick;
             timer.Interval = _timerInterval;
             double sessionTimeInSeconds = ConvertMillisecondsToSeconds(sessionTime.TimeInMilliseconds);
-            TimesToTick = (int)Math.Round(sessionTimeInSeconds / _timerInterval.TotalSeconds, MidpointRounding.AwayFromZero);
+            TimesToTick = sessionTimeInSeconds / _timerInterval.TotalSeconds;
         }
 
         public void SetTimer(TimeSpan timeToRunFor)
         {   
             TimesTicked = 0;
-            TimesToTick = (int)Math.Round(timeToRunFor.TotalSeconds / _timerInterval.TotalSeconds, MidpointRounding.AwayFromZero);
+            TimesToTick = timeToRunFor.TotalSeconds / _timerInterval.TotalSeconds;
         }
 
+        // Note: Timer doesn't always tick on time
         private void Timer_Tick(object sender, object e)
         {
-            TimesTicked++;
+
+            // Calculates time since last tick and adds ticks based on the time passed
+            TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
+            double ticksToAdd = timeSinceLastTick.TotalSeconds / _timerInterval.TotalSeconds;
+            TimesTicked += ticksToAdd;
+
             Debug.WriteLine($"Times ticked: {TimesTicked}/{TimesToTick}");
             LastTickTime = DateTimeOffset.UtcNow.UtcDateTime;
-            if (TimesTicked > TimesToTick)
+            if (TimesTicked >= TimesToTick)
             {
                 timer.Stop();
                 TimerEnded?.Invoke(sender, EventArgs.Empty);
             }
             else
             {    
-                TimerTicked?.Invoke(this, GetTimeLeft());
+                TimerTicked?.Invoke(sender, GetTimeLeft());
             }
 
         }
@@ -72,6 +78,7 @@ namespace PomoLibrary.Model
             if (willStart)
             {
                 DebugService.AddToLog($"Session Start: {DateTimeOffset.UtcNow}");
+                LastTickTime = DateTimeOffset.UtcNow.UtcDateTime;
                 timer.Start();
             }
             else
@@ -90,7 +97,7 @@ namespace PomoLibrary.Model
         internal void CatchUp()
         {
             TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            int ticksToAdd = (int)Math.Round(timeSinceLastTick.TotalSeconds / _timerInterval.TotalSeconds, MidpointRounding.AwayFromZero);
+            double ticksToAdd = timeSinceLastTick.TotalSeconds / _timerInterval.TotalSeconds;
             TimesTicked += ticksToAdd;
         }
 

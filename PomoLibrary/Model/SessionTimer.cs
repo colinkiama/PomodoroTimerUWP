@@ -130,7 +130,7 @@ namespace PomoLibrary.Model
 
         internal void CatchUp()
         {
-            TimeSpan timePassedSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
+            TimeSpan timePassedSinceLastTick = DateTime.UtcNow - LastTickTime;
             CurrentTickSum += timePassedSinceLastTick.Ticks;
         }
 

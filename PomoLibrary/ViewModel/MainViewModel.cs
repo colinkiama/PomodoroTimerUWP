@@ -139,7 +139,6 @@ namespace PomoLibrary.ViewModel
             if (CurrentSessionState == PomoSessionState.InProgress)
             {
                 NotificationsService.Instance.ClearAllNotifications();
-                CurrentSession.TimerCatchup();
 
                 // Important!: There's a possibility that after catching up, the session may have already ended.
                 // This would cause problems when trying to schedule a new toast, causing the app to crash.

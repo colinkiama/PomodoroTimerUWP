@@ -1,4 +1,5 @@
-﻿using PomoLibrary.Structs;
+﻿using PomoLibrary.Services;
+using PomoLibrary.Structs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,8 +15,7 @@ namespace PomoLibrary.Model
     {
         public event EventHandler<TimeSpan> TimerTicked;
         public event EventHandler TimerEnded;
-        const int TimerIntervalInMilliseconds = 250;
-        const double TimerIntervalInSeconds = 0.25;
+        private TimeSpan _timerInterval = TimeSpan.FromMilliseconds(250);
         DispatcherTimer timer;
 
         public int TimesTicked { get; set; } = 0;
@@ -26,7 +26,7 @@ namespace PomoLibrary.Model
         {
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalInMilliseconds);
+            timer.Interval = _timerInterval;
         }
         
         public SessionTimer(PomoSessionLength sessionTime)
@@ -34,15 +34,15 @@ namespace PomoLibrary.Model
             timer = new DispatcherTimer();
             TimesTicked = 0;
             timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, TimerIntervalInMilliseconds);
+            timer.Interval = _timerInterval;
             double sessionTimeInSeconds = ConvertMillisecondsToSeconds(sessionTime.TimeInMilliseconds);
-            TimesToTick = (int)Math.Round(sessionTimeInSeconds / TimerIntervalInSeconds, MidpointRounding.AwayFromZero);
+            TimesToTick = (int)Math.Round(sessionTimeInSeconds / _timerInterval.TotalSeconds, MidpointRounding.AwayFromZero);
         }
 
         public void SetTimer(TimeSpan timeToRunFor)
         {   
             TimesTicked = 0;
-            TimesToTick = (int)Math.Round(timeToRunFor.TotalSeconds / TimerIntervalInSeconds, MidpointRounding.AwayFromZero);
+            TimesToTick = (int)Math.Round(timeToRunFor.TotalSeconds / _timerInterval.TotalSeconds, MidpointRounding.AwayFromZero);
         }
 
         private void Timer_Tick(object sender, object e)
@@ -56,20 +56,22 @@ namespace PomoLibrary.Model
                 TimerEnded?.Invoke(sender, EventArgs.Empty);
             }
             else
-            {
-                TimeSpan timeElapsed = GetTimeElapsed();    
-                TimerTicked?.Invoke(this, timeElapsed);
+            {    
+                TimerTicked?.Invoke(this, GetTimeLeft());
             }
 
         }
 
-        public TimeSpan GetTimeElapsed() => TimeSpan.FromMilliseconds(TimerIntervalInMilliseconds * TimesTicked);
+        public TimeSpan GetTimeLeft() => TimeSpan.FromSeconds(_timerInterval.TotalSeconds * (TimesToTick - TimesTicked));
 
         public bool StartTimer()
         {
             bool willStart = TimesToTick > TimesTicked;
+            DebugService.AddToLog($"Times Ticked: {TimesTicked}, Times To tick: {TimesToTick}");
+            
             if (willStart)
             {
+                DebugService.AddToLog($"Session Start: {DateTimeOffset.UtcNow}");
                 timer.Start();
             }
             else
@@ -88,7 +90,7 @@ namespace PomoLibrary.Model
         internal void CatchUp()
         {
             TimeSpan timeSinceLastTick = DateTimeOffset.UtcNow.UtcDateTime - LastTickTime;
-            int ticksToAdd = (int)Math.Round(timeSinceLastTick.TotalSeconds / TimerIntervalInSeconds, MidpointRounding.AwayFromZero);
+            int ticksToAdd = (int)Math.Round(timeSinceLastTick.TotalSeconds / _timerInterval.TotalSeconds, MidpointRounding.AwayFromZero);
             TimesTicked += ticksToAdd;
         }
 

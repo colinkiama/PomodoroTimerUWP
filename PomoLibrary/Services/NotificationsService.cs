@@ -4,6 +4,7 @@ using PomoLibrary.Helpers;
 using PomoLibrary.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,21 +77,23 @@ namespace PomoLibrary.Services
             _toastNotifier.Show(toastNotif);
         }
 
-        public void ScheduleSessionEndToast(TimeSpan timeToPass, PomoSessionType sessionType, PomoSession session)
+        public void ScheduleSessionEndToast(PomoSessionType sessionType, PomoSession session)
         {
-            if (sessionType == PomoSessionType.LongBreak)
+            try
             {
-                ScheduleAllSessionCompletedToast(timeToPass, session);
-            }
-            else
-            {
-                var toastContent = new ToastContent()
+                if (sessionType == PomoSessionType.LongBreak)
                 {
-                    Visual = new ToastVisual()
+                    ScheduleAllSessionCompletedToast(session);
+                }
+                else
+                {
+                    var toastContent = new ToastContent()
                     {
-                        BindingGeneric = new ToastBindingGeneric()
+                        Visual = new ToastVisual()
                         {
-                            Children =
+                            BindingGeneric = new ToastBindingGeneric()
+                            {
+                                Children =
             {
                 new AdaptiveText()
                 {
@@ -103,34 +106,43 @@ namespace PomoLibrary.Services
 
 
             }
-                        }
-                    },
-                    Actions = new ToastActionsCustom()
-                    {
-                        Buttons =
+                            }
+                        },
+                        Actions = new ToastActionsCustom()
+                        {
+                            Buttons =
         {
             new ToastButton("Dismiss", SessionEndArgument)
             {
                 ActivationType = ToastActivationType.Foreground
             }
         }
-                    },
-                    Scenario = ToastScenario.Alarm
-                };
+                        },
+                        Scenario = ToastScenario.Alarm
+                    };
 
-                // Create the toast notification
-                var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.UtcNow.Add(timeToPass));
-                scheduledToast.Tag = ScheduledNotificationID;
-                scheduledToast.Id = ScheduledNotificationID;
+                    // Create the toast notification
+                    DateTimeOffset scheduledTime = DateTimeOffset.UtcNow.Add(session.Timer.GetTimeLeft());
+                    Debug.WriteLine(scheduledTime);
+                    DebugService.AddToLog($"ScheduledTime:{scheduledTime}");
+                    var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.Now.Add(session.Timer.GetTimeLeft()));
+                    scheduledToast.Tag = ScheduledNotificationID;
+                    scheduledToast.Id = ScheduledNotificationID;
 
-                // And send the notification
-                _toastNotifier.AddToSchedule(scheduledToast);
+                    // And send the notification
+                    _toastNotifier.AddToSchedule(scheduledToast);
+                }
+            }
+            catch (Exception)
+            {
+
+                
             }
 
         }
 
 
-        private void ScheduleAllSessionCompletedToast(TimeSpan timeToPass, PomoSession session)
+        private void ScheduleAllSessionCompletedToast(PomoSession session)
         {
             var toastContent = new ToastContent()
             {
@@ -170,8 +182,8 @@ namespace PomoLibrary.Services
             };
 
             // Create the toast notification
-            var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.UtcNow.Add(timeToPass));
-            scheduledToast.Tag = ScheduledNotificationID; 
+            var scheduledToast = new ScheduledToastNotification(toastContent.GetXml(), DateTimeOffset.Now.Add(session.Timer.GetTimeLeft()));
+            scheduledToast.Tag = ScheduledNotificationID;
             scheduledToast.Id = ScheduledNotificationID;
 
             // And send the notification
@@ -193,6 +205,6 @@ namespace PomoLibrary.Services
             {
                 _toastNotifier.RemoveFromSchedule(scheduledToastsToRemove[i]);
             }
-         }
+        }
     }
 }

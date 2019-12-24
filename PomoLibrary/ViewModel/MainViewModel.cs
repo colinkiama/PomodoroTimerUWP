@@ -144,15 +144,9 @@ namespace PomoLibrary.ViewModel
                 // Important!: There's a possibility that after catching up, the session may have already ended.
                 // This would cause problems when trying to schedule a new toast, causing the app to crash.
                 // So we wrap the method in a try-catch block.
-                try
-                {
-                    NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
 
-                }
-                catch (Exception ex)
-                {
+                NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionType, CurrentSession);
 
-                }
             }
 
         }
@@ -251,7 +245,7 @@ namespace PomoLibrary.ViewModel
             CurrentSessionType = CurrentSession.CurrentSessionType;
             // TODO: Adjust this to support the different Session Lengths for each session state
             _sessionLength = PickLengthFromType(_currentSessionType);
-            UpdateSessionTime(CurrentSession.Timer.GetTimeElapsed());
+            UpdateSessionTime(CurrentSession.Timer.GetTimeLeft());
 
         }
 
@@ -382,8 +376,8 @@ namespace PomoLibrary.ViewModel
         internal void Continue()
         {
             bool resumedSession = CurrentSession.StartSession();
-            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType, CurrentSession);
-            NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength, CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ShowSessionStartToast(CurrentSession.Timer.GetTimeLeft(), CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionType, CurrentSession);
             if (!resumedSession)
             {
                 // Session has been completely done!
@@ -393,7 +387,7 @@ namespace PomoLibrary.ViewModel
         internal void Resume()
         {
             CurrentSession.ResumeSession();
-            NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength - CurrentSession.Timer.GetTimeElapsed(), CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionType, CurrentSession);
         }
 
 
@@ -401,8 +395,9 @@ namespace PomoLibrary.ViewModel
         {
             CreateNewSession();
             CurrentSession.StartSession();
-            NotificationsService.Instance.ShowSessionStartToast(_sessionLength, CurrentSessionType, CurrentSession);
-            NotificationsService.Instance.ScheduleSessionEndToast(_sessionLength, CurrentSessionType, CurrentSession);
+            DebugService.AddToLog($"Session Length:{_sessionLength}");
+            NotificationsService.Instance.ShowSessionStartToast(CurrentSession.Timer.GetTimeLeft(), CurrentSessionType, CurrentSession);
+            NotificationsService.Instance.ScheduleSessionEndToast(CurrentSessionType, CurrentSession);
         }
 
         private void CreateNewSession()
@@ -424,14 +419,17 @@ namespace PomoLibrary.ViewModel
             await FileIOService.Instance.RemoveCurrentSessionData();
         }
 
-        private void CurrentSession_TimerTicked(object sender, TimeSpan timeElapsed)
+        private void CurrentSession_TimerTicked(object sender, TimeSpan timeLeft)
         {
-            UpdateSessionTime(timeElapsed);
+            UpdateSessionTime(timeLeft);
         }
 
-        private void UpdateSessionTime(TimeSpan timeElapsed)
+
+
+
+        private void UpdateSessionTime(TimeSpan timeLeft)
         {
-            CurrentSessionTime = _sessionLength - timeElapsed;
+            CurrentSessionTime = timeLeft;
         }
     }
 }

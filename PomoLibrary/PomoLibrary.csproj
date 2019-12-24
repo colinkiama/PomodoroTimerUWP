@@ -144,6 +144,7 @@
     <Compile Include="Enums\TimeUnit.cs" />
     <Compile Include="Model\PomoSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DebugService.cs" />
     <Compile Include="Services\FileIOService.cs" />
     <Compile Include="Services\MenuButtonService.cs" />
     <Compile Include="Services\MiniViewService.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Common\Notifier.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="Views\DebugLogView.xaml.cs">
+      <DependentUpon>DebugLogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -185,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\SessionCompletedDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DebugLogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

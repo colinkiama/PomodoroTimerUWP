@@ -32,6 +32,7 @@ namespace PomoLibrary.Views
             new MenuItem{ Title= "Settings" ,IconGlyph = "\xE713" },
             //new MenuItem{ Title= "Statistics" ,IconGlyph = "\xE9D9" },
             new MenuItem{ Title= "About" ,IconGlyph = "\xE897" },
+            new MenuItem{Title = "Debug", IconGlyph="\xE1DE"},
         };
 
 
@@ -63,6 +64,9 @@ namespace PomoLibrary.Views
                     //    break;
                     case 1:
                         await ShowAboutDialogAsync();
+                        break;
+                    case 2:
+                        Frame.Navigate(typeof(DebugLogView));
                         break;
                 }
             }
